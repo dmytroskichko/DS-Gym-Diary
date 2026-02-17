@@ -50,6 +50,38 @@
     z-index: 10;
   }
 
+  .front-header-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 4px;
+  }
+
+  .front-header-buttons {
+    display: flex;
+    gap: 8px;
+  }
+
+  .btn-header-action {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+    font-size: 18px;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s, color 0.2s;
+  }
+
+  .btn-header-action:hover {
+    background: var(--surface3);
+    color: var(--text);
+  }
+
   .front-header h1 {
     font-family: 'Bebas Neue', sans-serif;
     font-size: 36px;
@@ -550,6 +582,40 @@
 
   .btn-finish:active { transform: scale(0.97); }
 
+  /* Bodyweight field */
+  .bodyweight-area {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 14px;
+    margin-bottom: 14px;
+  }
+
+  .bodyweight-area label {
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    display: block;
+    margin-bottom: 8px;
+  }
+
+  .bodyweight-input {
+    width: 100%;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    color: var(--text);
+    font-family: 'Raleway', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    padding: 10px 12px;
+    outline: none;
+    text-align: center;
+  }
+
+  .bodyweight-input:focus { border-color: var(--accent2); }
+
   /* Note area */
   .note-area {
     background: var(--surface);
@@ -881,6 +947,351 @@
   }
 
   .share-back-btn:hover { color: var(--text); }
+
+  /* ══════════════ SETTINGS SCREEN ══════════════ */
+  #screen-settings { background: var(--bg); }
+
+  .settings-header {
+    padding: 52px 24px 24px;
+    background: var(--surface);
+    border-bottom: 2px solid var(--accent);
+  }
+
+  .settings-back {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: none;
+    border: none;
+    color: var(--text-dim);
+    font-family: 'Raleway', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 0;
+    margin-bottom: 16px;
+    letter-spacing: 1px;
+  }
+
+  .settings-back:hover { color: var(--text); }
+
+  .settings-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 36px;
+    letter-spacing: 3px;
+    color: var(--accent);
+    line-height: 1;
+  }
+
+  .settings-body {
+    padding: 24px 20px 80px;
+  }
+
+  .settings-section {
+    margin-bottom: 32px;
+  }
+
+  .settings-section-title {
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-bottom: 12px;
+    font-weight: 600;
+  }
+
+  .settings-input-group {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 16px;
+  }
+
+  .settings-label {
+    font-size: 12px;
+    color: var(--text-dim);
+    margin-bottom: 8px;
+    display: block;
+  }
+
+  .settings-input {
+    width: 100%;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    color: var(--text);
+    font-family: 'Raleway', sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    padding: 12px 14px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .settings-input:focus { border-color: var(--accent); }
+
+  .settings-button {
+    width: 100%;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text);
+    border-radius: var(--radius);
+    padding: 16px;
+    font-family: 'Raleway', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s;
+    margin-bottom: 10px;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .settings-button:hover {
+    background: var(--surface2);
+    border-color: var(--accent2);
+  }
+
+  .settings-button-icon {
+    font-size: 20px;
+    width: 32px;
+    text-align: center;
+  }
+
+  .settings-button-label {
+    flex: 1;
+  }
+
+  .settings-button-arrow {
+    color: var(--text-dim);
+    font-size: 14px;
+  }
+
+  /* ══════════════ REST TIMER ══════════════ */
+  .rest-timer {
+    position: fixed;
+    bottom: 100px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--surface);
+    border: 2px solid var(--accent2);
+    border-radius: var(--radius);
+    padding: 16px 24px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.6);
+    z-index: 100;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    min-width: 200px;
+  }
+
+  .rest-timer.show { display: flex; }
+
+  .rest-timer-label {
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-dim);
+  }
+
+  .rest-timer-time {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 48px;
+    letter-spacing: 2px;
+    color: var(--accent2);
+    line-height: 1;
+  }
+
+  .rest-timer-controls {
+    display: flex;
+    gap: 8px;
+  }
+
+  .rest-timer-btn {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 6px 16px;
+    border-radius: var(--radius-sm);
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+
+  .rest-timer-btn:hover { background: var(--surface3); }
+
+  /* ══════════════ PR BADGE ══════════════ */
+  .pr-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: linear-gradient(135deg, #ffd700, #ffed4e);
+    color: #000;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 12px;
+    letter-spacing: 0.5px;
+    margin-left: 6px;
+    animation: prPulse 1.5s ease infinite;
+  }
+
+  @keyframes prPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+  }
+
+  /* ══════════════ PROGRESS MODAL ══════════════ */
+  .progress-modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.85);
+    z-index: 60;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    backdrop-filter: blur(4px);
+  }
+
+  .progress-modal.show { display: flex; }
+
+  .progress-sheet {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    width: 100%;
+    max-width: 500px;
+    max-height: 80vh;
+    overflow-y: auto;
+    padding: 24px;
+  }
+
+  .progress-header {
+    margin-bottom: 20px;
+  }
+
+  .progress-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 24px;
+    letter-spacing: 2px;
+    color: var(--accent);
+    margin-bottom: 4px;
+  }
+
+  .progress-subtitle {
+    font-size: 12px;
+    color: var(--text-dim);
+  }
+
+  .progress-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  .progress-stat {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 12px;
+  }
+
+  .progress-stat-label {
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-bottom: 4px;
+  }
+
+  .progress-stat-value {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    letter-spacing: 1px;
+    color: var(--accent2);
+    line-height: 1;
+  }
+
+  .progress-chart {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 16px;
+    margin-bottom: 16px;
+  }
+
+  .progress-chart-title {
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-bottom: 12px;
+  }
+
+  .progress-chart-canvas {
+    width: 100%;
+    height: 200px;
+  }
+
+  .progress-history {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 12px;
+  }
+
+  .progress-history-title {
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-bottom: 10px;
+  }
+
+  .progress-history-item {
+    display: grid;
+    grid-template-columns: 80px 1fr 1fr;
+    gap: 8px;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+  }
+
+  .progress-history-item:last-child { border-bottom: none; }
+
+  .progress-history-date {
+    color: var(--text-dim);
+    font-size: 11px;
+  }
+
+  .progress-history-weight {
+    color: var(--accent2);
+    font-weight: 600;
+  }
+
+  .progress-history-reps {
+    color: var(--text);
+  }
+
+  .progress-close {
+    width: 100%;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: var(--text);
+    border-radius: var(--radius);
+    padding: 12px;
+    font-family: 'Raleway', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 16px;
+  }
 </style>
 </head>
 <body>
@@ -888,8 +1299,15 @@
 <!-- ══════════ FRONT SCREEN ══════════ -->
 <div id="screen-front" class="screen active">
   <div class="front-header">
-    <h1>ДНЕВНИК</h1>
-    <div class="subtitle">Тренировочный журнал</div>
+    <div class="front-header-top">
+      <div>
+        <h1 id="front-header-title">ДНЕВНИК</h1>
+        <div class="subtitle">Тренировочный журнал</div>
+      </div>
+      <div class="front-header-buttons">
+        <button class="btn-header-action" id="btn-settings" title="Настройки">⚙</button>
+      </div>
+    </div>
   </div>
 
   <div class="cal-nav">
@@ -930,6 +1348,11 @@
   <div class="session-body" id="session-body">
     <div id="exercises-container"></div>
 
+    <div class="bodyweight-area">
+      <label>Вес тела (кг)</label>
+      <input type="number" class="bodyweight-input" id="bodyweight-input" placeholder="—" inputmode="decimal" min="0" step="0.1">
+    </div>
+
     <div class="note-area" id="note-area">
       <label>Заметка</label>
       <textarea class="note-textarea" id="note-textarea" placeholder="Добавьте заметку к тренировке..."></textarea>
@@ -941,6 +1364,45 @@
     <div class="session-actions">
       <button class="btn-note" id="btn-add-note">📝 ЗАМЕТКА</button>
       <button class="btn-finish" id="btn-finish-training">ЗАВЕРШИТЬ</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ SETTINGS SCREEN ══════════ -->
+<div id="screen-settings" class="screen">
+  <div class="settings-header">
+    <button class="settings-back" id="settings-back-btn">← Назад</button>
+    <div class="settings-title">НАСТРОЙКИ</div>
+  </div>
+  <div class="settings-body">
+    <div class="settings-section">
+      <div class="settings-section-title">Профиль</div>
+      <div class="settings-input-group">
+        <label class="settings-label">Ваше имя</label>
+        <input type="text" class="settings-input" id="settings-user-name" placeholder="Введите имя">
+      </div>
+    </div>
+
+    <div class="settings-section">
+      <div class="settings-section-title">Тренировка</div>
+      <div class="settings-input-group">
+        <label class="settings-label">Время отдыха (секунды)</label>
+        <input type="number" class="settings-input" id="settings-rest-time" placeholder="90" min="30" max="600" step="10">
+      </div>
+    </div>
+
+    <div class="settings-section">
+      <div class="settings-section-title">Данные</div>
+      <button class="settings-button" id="settings-export-btn">
+        <span class="settings-button-icon">↑</span>
+        <span class="settings-button-label">Экспорт данных</span>
+        <span class="settings-button-arrow">›</span>
+      </button>
+      <button class="settings-button" id="settings-import-btn">
+        <span class="settings-button-icon">↓</span>
+        <span class="settings-button-label">Импорт данных</span>
+        <span class="settings-button-arrow">›</span>
+      </button>
     </div>
   </div>
 </div>
@@ -991,6 +1453,54 @@
   </div>
 </div>
 
+<!-- Rest Timer -->
+<div class="rest-timer" id="rest-timer">
+  <div class="rest-timer-label">Отдых</div>
+  <div class="rest-timer-time" id="rest-timer-time">1:30</div>
+  <div class="rest-timer-controls">
+    <button class="rest-timer-btn" id="rest-timer-skip">Пропустить</button>
+    <button class="rest-timer-btn" id="rest-timer-add">+30с</button>
+  </div>
+</div>
+
+<!-- Progress Modal -->
+<div class="progress-modal" id="progress-modal">
+  <div class="progress-sheet">
+    <div class="progress-header">
+      <div class="progress-title" id="progress-ex-name">—</div>
+      <div class="progress-subtitle">История прогресса</div>
+    </div>
+    
+    <div class="progress-stats">
+      <div class="progress-stat">
+        <div class="progress-stat-label">Лучший вес</div>
+        <div class="progress-stat-value" id="progress-best-weight">—</div>
+      </div>
+      <div class="progress-stat">
+        <div class="progress-stat-label">Больше всего повторений</div>
+        <div class="progress-stat-value" id="progress-best-reps">—</div>
+      </div>
+    </div>
+
+    <div class="progress-chart">
+      <div class="progress-chart-title">График веса</div>
+      <canvas class="progress-chart-canvas" id="progress-chart-weight"></canvas>
+    </div>
+
+    <div class="progress-chart">
+      <div class="progress-chart-title">График повторений</div>
+      <canvas class="progress-chart-canvas" id="progress-chart-reps"></canvas>
+    </div>
+
+    <div class="progress-history">
+      <div class="progress-history-title">Последние 10 подходов</div>
+      <div id="progress-history-list"></div>
+    </div>
+
+    <button class="progress-close" id="progress-close">Закрыть</button>
+  </div>
+</div>
+
 <!-- Toast -->
 <div class="toast" id="toast"></div>
 
@@ -1025,7 +1535,7 @@ async function saveData(data) {
 }
 
 function defaultData() {
-  return { trainings: [], trainingNames: [], exerciseNames: [] };
+  return { trainings: [], trainingNames: [], exerciseNames: [], userName: '', restTimer: 90 };
 }
 
 // ═══════════════════════════════════════════════
@@ -1082,10 +1592,20 @@ function addToNameList(arr, name) {
   return arr.slice(0, 40);
 }
 
+function updateHeaderTitle() {
+  const header = document.getElementById('front-header-title');
+  if (appData.userName && appData.userName.trim()) {
+    header.textContent = `ДНЕВНИК — ${appData.userName.toUpperCase()}`;
+  } else {
+    header.textContent = 'ДНЕВНИК';
+  }
+}
+
 // ═══════════════════════════════════════════════
 // FRONT SCREEN – CALENDAR
 // ═══════════════════════════════════════════════
 function renderCalendar() {
+  updateHeaderTitle();
   const y = currentViewDate.getFullYear();
   const m = currentViewDate.getMonth();
   document.getElementById('cal-month-label').textContent = `${MONTHS_RU[m]} ${y}`;
@@ -1169,12 +1689,14 @@ function renderTrainingList() {
       `<span class="exercise-tag">${e.name || '—'}</span>`
     ).join('') + ((t.exercises||[]).length > 4 ? `<span class="exercise-tag">+${t.exercises.length-4}</span>` : '');
 
+    const bodyweightTag = t.bodyweight ? `<span class="exercise-tag">⚖️ ${t.bodyweight} кг</span>` : '';
+
     card.innerHTML = `
       <div class="training-card-header">
         <div class="training-card-name">${t.name || 'Без названия'}</div>
         <div class="training-card-date">${formatDateFull(t.date)}</div>
       </div>
-      <div class="training-card-exercises">${exTags || '<span style="font-size:11px;color:var(--text-dim)">Упражнений нет</span>'}</div>`;
+      <div class="training-card-exercises">${exTags || '<span style="font-size:11px;color:var(--text-dim)">Упражнений нет</span>'} ${bodyweightTag}</div>`;
 
     card.addEventListener('click', () => openTrainingModal(t.id));
     container.appendChild(card);
@@ -1246,7 +1768,12 @@ function renderShareScreen(t) {
   const dateLabel = `📅 ${d.getDate()} ${MONTHS_GEN_SHARE[d.getMonth()]} ${d.getFullYear()}, ${WDS_SHARE[wd]}`;
 
   document.getElementById('sv-name').textContent = t.name || 'Без названия';
-  document.getElementById('sv-date').textContent = dateLabel;
+  
+  let dateText = dateLabel;
+  if (t.bodyweight) {
+    dateText += ` • ⚖️ ${t.bodyweight} кг`;
+  }
+  document.getElementById('sv-date').textContent = dateText;
 
   const exContainer = document.getElementById('sv-exercises');
   exContainer.innerHTML = '';
@@ -1300,25 +1827,46 @@ document.getElementById('sv-back-btn').addEventListener('click', () => {
 // ── SHARE MODAL ───────────────────────────────────────────────────
 let currentShareTraining = null;
 let currentShareURL = '';
+let currentShortURL = '';
 
-function openShareModal(t) {
+// Your hosted app URL
+const HOSTED_URL = 'https://dmytroskichko.github.io/DS-Gym-Diary/';
+
+async function shortenURL(longURL) {
+  try {
+    const response = await fetch(`https://tinyurl.com/api-create.php?url=${encodeURIComponent(longURL)}`);
+    if (response.ok) {
+      return await response.text();
+    }
+  } catch(e) {
+    console.warn('URL shortening failed', e);
+  }
+  return longURL; // Fallback to long URL if shortening fails
+}
+
+async function openShareModal(t) {
   currentShareTraining = t;
 
-  // Build hash URL pointing to this same file
+  // Build hash URL pointing to the hosted app
   const data = btoa(unescape(encodeURIComponent(JSON.stringify(t))));
-  const fileURL = window.location.href.split('#')[0];
-  currentShareURL = fileURL + '#share=' + data;
+  currentShareURL = HOSTED_URL + '#share=' + data;
 
-  // Preview
+  // Show loading preview
+  document.getElementById('share-preview').innerHTML = `<strong>${t.name || 'Без названия'}</strong><br>Создание ссылки...`;
+  document.getElementById('modal-share').classList.add('show');
+
+  // Shorten URL
+  currentShortURL = await shortenURL(currentShareURL);
+
+  // Update preview
   const d = new Date(t.date + 'T00:00:00');
   const exNames = (t.exercises || []).map(e => e.name).filter(Boolean).slice(0, 3).join(', ');
   const exMore = (t.exercises || []).length > 3 ? ` +${t.exercises.length - 3}` : '';
   document.getElementById('share-preview').innerHTML =
     `<strong>${t.name || 'Без названия'}</strong><br>` +
     `${d.getDate()} ${MONTHS_GEN_SHARE[d.getMonth()]} ${d.getFullYear()}<br>` +
-    (exNames ? `Упражнения: ${exNames}${exMore}` : 'Упражнения не записаны');
-
-  document.getElementById('modal-share').classList.add('show');
+    (exNames ? `Упражнения: ${exNames}${exMore}` : 'Упражнения не записаны') +
+    `<br><br><code style="font-size:11px;color:var(--accent2);word-break:break-all;">${currentShortURL}</code>`;
 }
 
 document.getElementById('btn-open-link').addEventListener('click', () => {
@@ -1335,11 +1883,12 @@ document.getElementById('modal-share').addEventListener('click', function(e) {
 });
 
 document.getElementById('btn-copy-share').addEventListener('click', () => {
+  const urlToCopy = currentShortURL || currentShareURL;
   if (navigator.clipboard) {
-    navigator.clipboard.writeText(currentShareURL)
+    navigator.clipboard.writeText(urlToCopy)
       .then(() => showToast('Ссылка скопирована!'))
-      .catch(() => fallbackCopy(currentShareURL));
-  } else { fallbackCopy(currentShareURL); }
+      .catch(() => fallbackCopy(urlToCopy));
+  } else { fallbackCopy(urlToCopy); }
 });
 
 function fallbackCopy(text) {
@@ -1386,6 +1935,10 @@ function openSession(isEdit = false, existingTraining = null) {
   // Name
   const nameInput = document.getElementById('session-name-input');
   nameInput.value = isEdit ? (existingTraining.name || '') : '';
+
+  // Bodyweight
+  const bodyweightInput = document.getElementById('bodyweight-input');
+  bodyweightInput.value = isEdit ? (existingTraining.bodyweight || '') : '';
 
   // Note
   const noteArea = document.getElementById('note-area');
@@ -1493,6 +2046,23 @@ function addExerciseBlock(existingEx) {
   const setsContainer = block.querySelector('.sets-container');
   const removeBtn = block.querySelector('.btn-remove-exercise');
 
+  // Click exercise name to see progress
+  nameInput.addEventListener('dblclick', () => {
+    const name = nameInput.value.trim();
+    if (name) showProgressModal(name);
+  });
+
+  // Long press on mobile
+  let pressTimer;
+  nameInput.addEventListener('touchstart', () => {
+    pressTimer = setTimeout(() => {
+      const name = nameInput.value.trim();
+      if (name) showProgressModal(name);
+    }, 500);
+  });
+  nameInput.addEventListener('touchend', () => clearTimeout(pressTimer));
+  nameInput.addEventListener('touchmove', () => clearTimeout(pressTimer));
+
   // Exercise name autocomplete
   nameInput.addEventListener('input', () => {
     const val = nameInput.value.trim().toLowerCase();
@@ -1537,6 +2107,22 @@ function addSetRow(container, weight, reps) {
   function checkAutoAdd() {
     const isLastRow = !row.nextElementSibling;
     if (isLastRow && weightInput.value.trim() && repsInput.value.trim()) {
+      // Get exercise name
+      const exerciseBlock = container.closest('.exercise-block');
+      const exerciseName = exerciseBlock?.querySelector('.exercise-name-input')?.value?.trim();
+      
+      // Check for PR
+      if (exerciseName) {
+        const isPRSet = isPR(exerciseName, weightInput.value, repsInput.value);
+        if (isPRSet) {
+          showToast('🏆 Новый рекорд!');
+        }
+      }
+      
+      // Start rest timer
+      startRestTimer(appData.restTimer || 90);
+      
+      // Add new row
       const newRow = addSetRow(container, '', '');
       // Scroll the new empty row into view smoothly
       setTimeout(() => {
@@ -1556,6 +2142,7 @@ function addSetRow(container, weight, reps) {
 // FINISH TRAINING
 document.getElementById('btn-finish-training').addEventListener('click', async () => {
   const name = document.getElementById('session-name-input').value.trim();
+  const bodyweight = document.getElementById('bodyweight-input').value.trim();
   const note = document.getElementById('note-textarea').value.trim();
 
   const exercises = [];
@@ -1584,6 +2171,7 @@ document.getElementById('btn-finish-training').addEventListener('click', async (
     id: sessionState.trainingId,
     date: sessionState.date,
     name: name || 'Без названия',
+    bodyweight: bodyweight,
     exercises,
     note,
     createdAt: Date.now(),
@@ -1621,6 +2209,333 @@ document.getElementById('btn-next-month').addEventListener('click', () => {
 
 document.getElementById('btn-start-training').addEventListener('click', () => {
   openSession(false, null);
+});
+
+// ═══════════════════════════════════════════════
+// REST TIMER
+// ═══════════════════════════════════════════════
+let restTimerInterval = null;
+let restTimerSeconds = 90; // default 90 seconds
+let restTimerRemaining = 0;
+
+function startRestTimer(seconds = 90) {
+  stopRestTimer(); // Clear any existing timer
+  restTimerSeconds = seconds;
+  restTimerRemaining = seconds;
+  
+  const timerEl = document.getElementById('rest-timer');
+  const timeEl = document.getElementById('rest-timer-time');
+  
+  timerEl.classList.add('show');
+  updateTimerDisplay();
+  
+  restTimerInterval = setInterval(() => {
+    restTimerRemaining--;
+    updateTimerDisplay();
+    
+    if (restTimerRemaining <= 0) {
+      stopRestTimer();
+      // Beep sound (vibrate on mobile)
+      if (navigator.vibrate) navigator.vibrate([200, 100, 200]);
+      showToast('Отдых завершён!');
+    }
+  }, 1000);
+}
+
+function updateTimerDisplay() {
+  const mins = Math.floor(restTimerRemaining / 60);
+  const secs = restTimerRemaining % 60;
+  document.getElementById('rest-timer-time').textContent = 
+    `${mins}:${String(secs).padStart(2, '0')}`;
+}
+
+function stopRestTimer() {
+  if (restTimerInterval) {
+    clearInterval(restTimerInterval);
+    restTimerInterval = null;
+  }
+  document.getElementById('rest-timer').classList.remove('show');
+}
+
+document.getElementById('rest-timer-skip').addEventListener('click', stopRestTimer);
+
+document.getElementById('rest-timer-add').addEventListener('click', () => {
+  restTimerRemaining += 30;
+  updateTimerDisplay();
+});
+
+// ═══════════════════════════════════════════════
+// PERSONAL RECORDS & PROGRESS TRACKING
+// ═══════════════════════════════════════════════
+function calculatePRs(exerciseName) {
+  const allSets = [];
+  
+  appData.trainings.forEach(training => {
+    training.exercises?.forEach(ex => {
+      if (ex.name && ex.name.toLowerCase() === exerciseName.toLowerCase()) {
+        ex.sets?.forEach(set => {
+          if (set.weight && set.reps) {
+            allSets.push({
+              date: training.date,
+              weight: parseFloat(set.weight),
+              reps: parseInt(set.reps)
+            });
+          }
+        });
+      }
+    });
+  });
+  
+  if (allSets.length === 0) return null;
+  
+  const bestWeight = Math.max(...allSets.map(s => s.weight));
+  const bestReps = Math.max(...allSets.map(s => s.reps));
+  
+  return { bestWeight, bestReps, allSets };
+}
+
+function isPR(exerciseName, weight, reps) {
+  const prs = calculatePRs(exerciseName);
+  if (!prs) return true; // First time = PR
+  
+  const w = parseFloat(weight);
+  const r = parseInt(reps);
+  
+  return w >= prs.bestWeight || r >= prs.bestReps;
+}
+
+function showProgressModal(exerciseName) {
+  const prs = calculatePRs(exerciseName);
+  
+  if (!prs || prs.allSets.length === 0) {
+    showToast('Нет данных по этому упражнению');
+    return;
+  }
+  
+  document.getElementById('progress-ex-name').textContent = exerciseName;
+  document.getElementById('progress-best-weight').textContent = prs.bestWeight + ' кг';
+  document.getElementById('progress-best-reps').textContent = prs.bestReps;
+  
+  // Sort by date
+  prs.allSets.sort((a, b) => a.date.localeCompare(b.date));
+  
+  // Draw charts
+  drawProgressChart('progress-chart-weight', prs.allSets, 'weight');
+  drawProgressChart('progress-chart-reps', prs.allSets, 'reps');
+  
+  // Show history
+  const historyList = document.getElementById('progress-history-list');
+  historyList.innerHTML = '';
+  
+  prs.allSets.slice(-10).reverse().forEach(set => {
+    const item = document.createElement('div');
+    item.className = 'progress-history-item';
+    const d = new Date(set.date + 'T00:00:00');
+    item.innerHTML = `
+      <div class="progress-history-date">${d.getDate()}.${d.getMonth()+1}.${d.getFullYear()}</div>
+      <div class="progress-history-weight">${set.weight} кг</div>
+      <div class="progress-history-reps">${set.reps} повт.</div>
+    `;
+    historyList.appendChild(item);
+  });
+  
+  document.getElementById('progress-modal').classList.add('show');
+}
+
+document.getElementById('progress-close').addEventListener('click', () => {
+  document.getElementById('progress-modal').classList.remove('show');
+});
+
+document.getElementById('progress-modal').addEventListener('click', function(e) {
+  if (e.target === this) this.classList.remove('show');
+});
+
+function drawProgressChart(canvasId, data, metric) {
+  const canvas = document.getElementById(canvasId);
+  const ctx = canvas.getContext('2d');
+  const dpr = window.devicePixelRatio || 1;
+  
+  canvas.width = canvas.offsetWidth * dpr;
+  canvas.height = canvas.offsetHeight * dpr;
+  ctx.scale(dpr, dpr);
+  
+  const w = canvas.offsetWidth;
+  const h = canvas.offsetHeight;
+  
+  ctx.clearRect(0, 0, w, h);
+  
+  if (data.length === 0) return;
+  
+  const values = data.map(d => metric === 'weight' ? d.weight : d.reps);
+  const maxVal = Math.max(...values);
+  const minVal = Math.min(...values);
+  const range = maxVal - minVal || 1;
+  
+  const padding = 40;
+  const chartW = w - padding * 2;
+  const chartH = h - padding * 2;
+  
+  // Draw grid
+  ctx.strokeStyle = '#2e3040';
+  ctx.lineWidth = 1;
+  for (let i = 0; i <= 4; i++) {
+    const y = padding + (chartH / 4) * i;
+    ctx.beginPath();
+    ctx.moveTo(padding, y);
+    ctx.lineTo(w - padding, y);
+    ctx.stroke();
+  }
+  
+  // Draw line
+  ctx.strokeStyle = metric === 'weight' ? '#47ffb8' : '#e8ff47';
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  
+  data.forEach((point, i) => {
+    const x = padding + (chartW / (data.length - 1 || 1)) * i;
+    const val = metric === 'weight' ? point.weight : point.reps;
+    const y = padding + chartH - ((val - minVal) / range) * chartH;
+    
+    if (i === 0) ctx.moveTo(x, y);
+    else ctx.lineTo(x, y);
+  });
+  
+  ctx.stroke();
+  
+  // Draw points
+  data.forEach((point, i) => {
+    const x = padding + (chartW / (data.length - 1 || 1)) * i;
+    const val = metric === 'weight' ? point.weight : point.reps;
+    const y = padding + chartH - ((val - minVal) / range) * chartH;
+    
+    ctx.fillStyle = metric === 'weight' ? '#47ffb8' : '#e8ff47';
+    ctx.beginPath();
+    ctx.arc(x, y, 4, 0, Math.PI * 2);
+    ctx.fill();
+  });
+  
+  // Draw labels
+  ctx.fillStyle = '#8a8d9a';
+  ctx.font = '11px Raleway';
+  ctx.textAlign = 'right';
+  
+  for (let i = 0; i <= 4; i++) {
+    const val = minVal + (range / 4) * (4 - i);
+    const y = padding + (chartH / 4) * i;
+    ctx.fillText(val.toFixed(0), padding - 8, y + 4);
+  }
+}
+
+// ═══════════════════════════════════════════════
+// SETTINGS SCREEN
+// ═══════════════════════════════════════════════
+document.getElementById('btn-settings').addEventListener('click', () => {
+  // Load current user name and rest timer
+  document.getElementById('settings-user-name').value = appData.userName || '';
+  document.getElementById('settings-rest-time').value = appData.restTimer || 90;
+  showScreen('settings');
+});
+
+document.getElementById('settings-back-btn').addEventListener('click', () => {
+  showScreen('front');
+});
+
+// Save user name on input change
+document.getElementById('settings-user-name').addEventListener('input', async (e) => {
+  appData.userName = e.target.value.trim();
+  await saveData(appData);
+  updateHeaderTitle();
+});
+
+// Save rest timer duration
+document.getElementById('settings-rest-time').addEventListener('change', async (e) => {
+  const val = parseInt(e.target.value);
+  if (val >= 30 && val <= 600) {
+    appData.restTimer = val;
+    await saveData(appData);
+    showToast('Время отдыха обновлено');
+  }
+});
+
+// Export button in settings
+document.getElementById('settings-export-btn').addEventListener('click', () => {
+  const dataStr = JSON.stringify(appData, null, 2);
+  const blob = new Blob([dataStr], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  const now = new Date();
+  const dateStr = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`;
+  const userName = appData.userName?.trim() || 'user';
+  const safeName = userName.replace(/[^a-zA-Zа-яА-ЯёЁ0-9]/g, '_');
+  a.href = url;
+  a.download = `${safeName}_training_backup_${dateStr}.json`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  showToast('Данные экспортированы!');
+});
+
+// Import button in settings
+document.getElementById('settings-import-btn').addEventListener('click', () => {
+  const input = document.createElement('input');
+  input.type = 'file';
+  input.accept = '.json';
+  input.onchange = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    try {
+      const text = await file.text();
+      const imported = JSON.parse(text);
+      
+      // Validate structure
+      if (!imported.trainings || !Array.isArray(imported.trainings)) {
+        showToast('Неверный формат файла');
+        return;
+      }
+
+      // Merge or replace?
+      if (appData.trainings.length > 0) {
+        const confirmMerge = confirm('У вас уже есть тренировки. Объединить с импортируемыми данными? (Отмена = заменить все данные)');
+        if (confirmMerge) {
+          // Merge: add imported trainings, avoiding duplicates by ID
+          const existingIds = new Set(appData.trainings.map(t => t.id));
+          imported.trainings.forEach(t => {
+            if (!existingIds.has(t.id)) {
+              appData.trainings.push(t);
+            }
+          });
+          // Merge name lists
+          imported.trainingNames?.forEach(n => {
+            if (!appData.trainingNames.includes(n)) appData.trainingNames.push(n);
+          });
+          imported.exerciseNames?.forEach(n => {
+            if (!appData.exerciseNames.includes(n)) appData.exerciseNames.push(n);
+          });
+          // Keep current userName unless not set
+          if (!appData.userName && imported.userName) {
+            appData.userName = imported.userName;
+          }
+        } else {
+          // Replace all
+          appData = imported;
+        }
+      } else {
+        // No existing data, just import
+        appData = imported;
+      }
+
+      await saveData(appData);
+      document.getElementById('settings-user-name').value = appData.userName || '';
+      updateHeaderTitle();
+      renderCalendar();
+      showToast('Данные импортированы!');
+    } catch(err) {
+      console.error('Import error:', err);
+      showToast('Ошибка при импорте');
+    }
+  };
+  input.click();
 });
 
 // ═══════════════════════════════════════════════
