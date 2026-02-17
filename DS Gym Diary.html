@@ -1,0 +1,1642 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Дневник Тренировок</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Raleway:wght@300;400;500;600;700&display=swap');
+
+  :root {
+    --bg: #0d0d0f;
+    --surface: #16171c;
+    --surface2: #1e1f26;
+    --surface3: #252830;
+    --accent: #e8ff47;
+    --accent2: #47ffb8;
+    --danger: #ff4757;
+    --text: #f0f0f0;
+    --text-dim: #8a8d9a;
+    --border: #2e3040;
+    --radius: 14px;
+    --radius-sm: 8px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+  body {
+    font-family: 'Raleway', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── SCREENS ── */
+  .screen { display: none; min-height: 100vh; flex-direction: column; }
+  .screen.active { display: flex; }
+
+  /* ══════════════ FRONT SCREEN ══════════════ */
+  #screen-front {
+    background: var(--bg);
+  }
+
+  .front-header {
+    padding: 54px 24px 20px;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+
+  .front-header h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 36px;
+    letter-spacing: 3px;
+    color: var(--accent);
+    line-height: 1;
+  }
+
+  .front-header .subtitle {
+    font-size: 11px;
+    color: var(--text-dim);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-top: 4px;
+  }
+
+  /* Calendar nav */
+  .cal-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 24px;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 108px;
+    z-index: 10;
+  }
+
+  .cal-nav-btn {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: var(--text);
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    font-size: 18px;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.2s;
+  }
+
+  .cal-nav-btn:hover { background: var(--surface3); }
+
+  .cal-month-label {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    letter-spacing: 2px;
+    color: var(--text);
+    text-transform: capitalize;
+  }
+
+  /* Week grid */
+  .cal-weekdays {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    padding: 12px 16px 4px;
+    background: var(--surface);
+  }
+
+  .cal-weekdays span {
+    text-align: center;
+    font-size: 10px;
+    color: var(--text-dim);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+
+  .cal-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+    padding: 8px 16px 16px;
+    background: var(--surface);
+  }
+
+  .cal-day {
+    aspect-ratio: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-sm);
+    cursor: default;
+    position: relative;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-dim);
+  }
+
+  .cal-day.has-training {
+    cursor: pointer;
+    background: var(--surface2);
+    color: var(--text);
+    border: 1px solid var(--border);
+    transition: transform 0.15s, background 0.15s;
+  }
+
+  .cal-day.has-training:hover {
+    background: var(--surface3);
+    transform: scale(1.05);
+  }
+
+  .cal-day.today .day-num {
+    background: var(--accent);
+    color: #000;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+  }
+
+  .cal-day.has-training .day-num {
+    color: var(--text);
+    font-weight: 700;
+  }
+
+  .training-dot {
+    width: 5px; height: 5px;
+    background: var(--accent);
+    border-radius: 50%;
+    margin-top: 2px;
+  }
+
+  .cal-day.has-training.multiple-trainings .training-dot {
+    background: var(--accent2);
+    width: 7px; height: 7px;
+  }
+
+  /* Training list */
+  .training-list-section {
+    flex: 1;
+    padding: 20px 16px 120px;
+    overflow-y: auto;
+  }
+
+  .section-title {
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-bottom: 12px;
+    padding-left: 4px;
+  }
+
+  .training-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 16px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s;
+  }
+
+  .training-card:hover { background: var(--surface2); border-color: var(--accent); }
+
+  .training-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 8px;
+  }
+
+  .training-card-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20px;
+    letter-spacing: 1px;
+    color: var(--accent);
+    line-height: 1;
+  }
+
+  .training-card-date {
+    font-size: 11px;
+    color: var(--text-dim);
+    text-align: right;
+  }
+
+  .training-card-exercises {
+    font-size: 12px;
+    color: var(--text-dim);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .exercise-tag {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 3px 10px;
+    font-size: 11px;
+    color: var(--text-dim);
+  }
+
+  .empty-state {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--text-dim);
+  }
+
+  .empty-state .big-icon { font-size: 48px; margin-bottom: 12px; }
+  .empty-state p { font-size: 14px; line-height: 1.6; }
+
+  /* Start button */
+  .front-bottom {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    padding: 16px 20px calc(16px + env(safe-area-inset-bottom));
+    background: linear-gradient(transparent, var(--bg) 40%);
+    z-index: 20;
+  }
+
+  .btn-start {
+    width: 100%;
+    background: var(--accent);
+    color: #000;
+    border: none;
+    border-radius: var(--radius);
+    padding: 18px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    letter-spacing: 3px;
+    cursor: pointer;
+    transition: transform 0.15s, opacity 0.15s;
+    box-shadow: 0 4px 30px rgba(232,255,71,0.3);
+  }
+
+  .btn-start:active { transform: scale(0.97); opacity: 0.9; }
+
+  /* ══════════════ TRAINING SESSION SCREEN ══════════════ */
+  #screen-session {
+    background: #111318;
+  }
+
+  .session-sticky-header {
+    position: sticky;
+    top: 0;
+    z-index: 30;
+    background: #0a0b0e;
+    border-bottom: 2px solid var(--accent);
+    padding: 48px 20px 14px;
+  }
+
+  .session-meta {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+
+  .session-date-badge {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 6px 12px;
+    font-size: 12px;
+    color: var(--text-dim);
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .session-name-wrap { flex: 1; position: relative; }
+
+  .session-name-input {
+    width: 100%;
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid var(--border);
+    color: var(--accent);
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    letter-spacing: 2px;
+    outline: none;
+    padding: 4px 0;
+    transition: border-color 0.2s;
+  }
+
+  .session-name-input:focus { border-color: var(--accent); }
+  .session-name-input::placeholder { color: rgba(232,255,71,0.3); }
+
+  .autocomplete-list {
+    position: absolute;
+    top: 100%; left: 0; right: 0;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    z-index: 100;
+    max-height: 160px;
+    overflow-y: auto;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+    display: none;
+  }
+
+  .autocomplete-list.show { display: block; }
+
+  .autocomplete-item {
+    padding: 10px 14px;
+    font-size: 14px;
+    cursor: pointer;
+    border-bottom: 1px solid var(--border);
+    transition: background 0.15s;
+    color: var(--text);
+  }
+
+  .autocomplete-item:last-child { border-bottom: none; }
+  .autocomplete-item:hover { background: var(--surface3); }
+
+  /* Session body */
+  .session-body {
+    padding: 16px 16px 220px;
+    overflow-y: auto;
+    flex: 1;
+  }
+
+  /* Exercise block */
+  .exercise-block {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    margin-bottom: 14px;
+    overflow: hidden;
+  }
+
+  .exercise-header {
+    padding: 14px 16px 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface2);
+  }
+
+  .exercise-number {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20px;
+    color: var(--accent2);
+    min-width: 24px;
+  }
+
+  .exercise-name-wrap { flex: 1; position: relative; }
+
+  .exercise-name-input {
+    width: 100%;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--border);
+    color: var(--text);
+    font-family: 'Raleway', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    outline: none;
+    padding: 4px 0;
+    transition: border-color 0.2s;
+  }
+
+  .exercise-name-input:focus { border-color: var(--accent2); }
+  .exercise-name-input::placeholder { color: var(--text-dim); font-weight: 400; }
+
+  .btn-remove-exercise {
+    background: none;
+    border: none;
+    color: var(--danger);
+    font-size: 20px;
+    cursor: pointer;
+    padding: 4px;
+    opacity: 0.6;
+    transition: opacity 0.15s;
+  }
+
+  .btn-remove-exercise:hover { opacity: 1; }
+
+  /* Sets table */
+  .sets-table { width: 100%; padding: 10px 12px 12px; }
+
+  .sets-header {
+    display: grid;
+    grid-template-columns: 36px 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 6px;
+    padding: 0 4px;
+  }
+
+  .sets-header span {
+    font-size: 9px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    text-align: center;
+  }
+
+  .sets-header span:first-child { text-align: center; }
+
+  .set-row {
+    display: grid;
+    grid-template-columns: 36px 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 6px;
+    align-items: center;
+  }
+
+  .set-num {
+    text-align: center;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18px;
+    color: var(--text-dim);
+  }
+
+  .set-input {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    color: var(--text);
+    font-family: 'Raleway', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    padding: 10px;
+    text-align: center;
+    outline: none;
+    transition: border-color 0.2s;
+    width: 100%;
+    -moz-appearance: textfield;
+  }
+
+  .set-input::-webkit-outer-spin-button,
+  .set-input::-webkit-inner-spin-button { -webkit-appearance: none; }
+
+  .set-input:focus { border-color: var(--accent2); }
+  .set-input::placeholder { color: var(--border); font-size: 13px; }
+
+  /* Session bottom buttons */
+  .session-bottom {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    padding: 12px 16px calc(12px + env(safe-area-inset-bottom));
+    background: linear-gradient(transparent, #0a0b0e 30%);
+    z-index: 20;
+  }
+
+  .btn-new-exercise {
+    width: 100%;
+    background: var(--surface2);
+    border: 2px dashed var(--border);
+    color: var(--text-dim);
+    border-radius: var(--radius);
+    padding: 14px;
+    font-family: 'Raleway', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: border-color 0.2s, color 0.2s;
+    margin-bottom: 10px;
+  }
+
+  .btn-new-exercise:hover { border-color: var(--accent2); color: var(--accent2); }
+
+  .session-actions {
+    display: grid;
+    grid-template-columns: 1fr 1.6fr;
+    gap: 10px;
+  }
+
+  .btn-note {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+    border-radius: var(--radius);
+    padding: 14px;
+    font-family: 'Raleway', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+    text-align: center;
+  }
+
+  .btn-note:hover { background: var(--surface3); }
+
+  .btn-finish {
+    background: var(--accent);
+    border: none;
+    color: #000;
+    border-radius: var(--radius);
+    padding: 14px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20px;
+    letter-spacing: 2px;
+    cursor: pointer;
+    transition: transform 0.15s, opacity 0.15s;
+    box-shadow: 0 4px 20px rgba(232,255,71,0.25);
+  }
+
+  .btn-finish:active { transform: scale(0.97); }
+
+  /* Note area */
+  .note-area {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 14px;
+    margin-bottom: 14px;
+    display: none;
+  }
+
+  .note-area.show { display: block; }
+
+  .note-area label {
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    display: block;
+    margin-bottom: 8px;
+  }
+
+  .note-textarea {
+    width: 100%;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    color: var(--text);
+    font-family: 'Raleway', sans-serif;
+    font-size: 14px;
+    padding: 10px 12px;
+    outline: none;
+    resize: none;
+    min-height: 80px;
+    line-height: 1.5;
+  }
+
+  .note-textarea:focus { border-color: var(--accent2); }
+
+  /* ══════════════ POPUP MODAL ══════════════ */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.7);
+    z-index: 50;
+    display: none;
+    align-items: flex-end;
+    justify-content: center;
+    backdrop-filter: blur(4px);
+  }
+
+  .modal-overlay.show { display: flex; }
+
+  .modal-sheet {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 24px 24px 0 0;
+    width: 100%;
+    max-width: 480px;
+    padding: 20px 20px calc(28px + env(safe-area-inset-bottom));
+    animation: slideUp 0.25s ease;
+  }
+
+  @keyframes slideUp {
+    from { transform: translateY(100%); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+
+  .modal-handle {
+    width: 40px; height: 4px;
+    background: var(--border);
+    border-radius: 2px;
+    margin: 0 auto 16px;
+  }
+
+  .modal-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    letter-spacing: 2px;
+    color: var(--accent);
+    margin-bottom: 6px;
+  }
+
+  .modal-subtitle {
+    font-size: 12px;
+    color: var(--text-dim);
+    margin-bottom: 20px;
+  }
+
+  .modal-actions { display: flex; flex-direction: column; gap: 10px; }
+
+  .modal-btn {
+    width: 100%;
+    border-radius: var(--radius);
+    padding: 15px;
+    font-family: 'Raleway', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity 0.15s;
+    border: none;
+    text-align: center;
+  }
+
+  .modal-btn:active { opacity: 0.8; }
+  .modal-btn.edit { background: var(--surface2); color: var(--text); border: 1px solid var(--border); }
+  .modal-btn.share { background: var(--accent2); color: #000; }
+  .modal-btn.delete { background: var(--danger); color: #fff; }
+  .modal-btn.cancel { background: transparent; color: var(--text-dim); border: 1px solid var(--border); }
+
+  /* ══════════════ SHARE MODAL ══════════════ */
+  .share-preview {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 14px 16px;
+    margin-bottom: 14px;
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--text-dim);
+  }
+  .share-preview strong { color: var(--text); font-weight: 600; }
+
+  .btn-copy {
+    width: 100%;
+    background: var(--accent2);
+    border: none;
+    color: #000;
+    border-radius: var(--radius);
+    padding: 14px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18px;
+    letter-spacing: 2px;
+    cursor: pointer;
+    margin-bottom: 10px;
+  }
+
+  .btn-open-link {
+    width: 100%;
+    background: var(--surface2);
+    border: 1px solid var(--accent2);
+    color: var(--accent2);
+    border-radius: var(--radius);
+    padding: 14px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18px;
+    letter-spacing: 2px;
+    cursor: pointer;
+    margin-bottom: 10px;
+    text-align: center;
+  }
+
+  /* Toast */
+  .toast {
+    position: fixed;
+    bottom: 100px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 12px 24px;
+    font-size: 13px;
+    color: var(--text);
+    z-index: 999;
+    display: none;
+    white-space: nowrap;
+  }
+
+  .toast.show { display: block; animation: fadeInOut 2s forwards; }
+
+  @keyframes fadeInOut {
+    0% { opacity: 0; transform: translateX(-50%) translateY(10px); }
+    15% { opacity: 1; transform: translateX(-50%) translateY(0); }
+    70% { opacity: 1; }
+    100% { opacity: 0; }
+  }
+
+  /* ══════════════ SHARE VIEW SCREEN ══════════════ */
+  #screen-share { background: var(--bg); }
+
+  .share-hero {
+    background: var(--surface);
+    border-bottom: 3px solid var(--accent);
+    padding: 52px 24px 24px;
+  }
+
+  .share-hero-label {
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-bottom: 8px;
+  }
+
+  .share-hero-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 44px;
+    letter-spacing: 3px;
+    color: var(--accent);
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+
+  .share-hero-date {
+    font-size: 14px;
+    color: var(--text-dim);
+  }
+
+  .share-body {
+    padding: 20px 16px 60px;
+  }
+
+  .share-ex-block {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    margin-bottom: 12px;
+    overflow: hidden;
+  }
+
+  .share-ex-title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    background: var(--surface2);
+    font-size: 15px;
+    font-weight: 600;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .share-ex-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20px;
+    color: var(--accent2);
+    min-width: 22px;
+  }
+
+  .share-sets-header {
+    display: grid;
+    grid-template-columns: 44px 1fr 1fr;
+    padding: 8px 16px 4px;
+    background: var(--surface2);
+  }
+
+  .share-sets-header span {
+    font-size: 9px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    font-weight: 600;
+  }
+
+  .share-set-row {
+    display: grid;
+    grid-template-columns: 44px 1fr 1fr;
+    padding: 10px 16px;
+    border-top: 1px solid var(--border);
+    align-items: center;
+  }
+
+  .share-set-row:hover { background: var(--surface2); }
+
+  .share-set-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18px;
+    color: var(--text-dim);
+  }
+
+  .share-set-weight {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--accent2);
+  }
+
+  .share-set-reps {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--text);
+  }
+
+  .share-note-block {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent2);
+    border-radius: var(--radius);
+    padding: 14px 16px;
+    margin-top: 4px;
+  }
+
+  .share-note-label {
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-bottom: 8px;
+  }
+
+  .share-note-text {
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--text);
+  }
+
+  .share-footer {
+    text-align: center;
+    padding: 16px;
+    font-size: 11px;
+    color: var(--text-dim);
+    letter-spacing: 1px;
+    border-top: 1px solid var(--border);
+    margin-top: 8px;
+  }
+
+  .share-back-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: none;
+    border: none;
+    color: var(--text-dim);
+    font-family: 'Raleway', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 0;
+    margin-bottom: 16px;
+    letter-spacing: 1px;
+  }
+
+  .share-back-btn:hover { color: var(--text); }
+</style>
+</head>
+<body>
+
+<!-- ══════════ FRONT SCREEN ══════════ -->
+<div id="screen-front" class="screen active">
+  <div class="front-header">
+    <h1>ДНЕВНИК</h1>
+    <div class="subtitle">Тренировочный журнал</div>
+  </div>
+
+  <div class="cal-nav">
+    <button class="cal-nav-btn" id="btn-prev-month">‹</button>
+    <div class="cal-month-label" id="cal-month-label">Январь 2025</div>
+    <button class="cal-nav-btn" id="btn-next-month">›</button>
+  </div>
+
+  <div class="cal-weekdays">
+    <span>Пн</span><span>Вт</span><span>Ср</span>
+    <span>Чт</span><span>Пт</span><span>Сб</span><span>Вс</span>
+  </div>
+  <div class="cal-grid" id="cal-grid"></div>
+
+  <div class="training-list-section">
+    <div class="section-title" id="list-section-title">Тренировки месяца</div>
+    <div id="training-list-container"></div>
+  </div>
+
+  <div class="front-bottom">
+    <button class="btn-start" id="btn-start-training">＋ НАЧАТЬ ТРЕНИРОВКУ</button>
+  </div>
+</div>
+
+<!-- ══════════ SESSION SCREEN ══════════ -->
+<div id="screen-session" class="screen">
+  <div class="session-sticky-header">
+    <div class="session-meta">
+      <div class="session-date-badge" id="session-date-badge">—</div>
+      <div class="session-name-wrap">
+        <input type="text" class="session-name-input" id="session-name-input"
+               placeholder="НАЗВАНИЕ ТРЕНИРОВКИ" autocomplete="off">
+        <div class="autocomplete-list" id="session-name-ac"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="session-body" id="session-body">
+    <div id="exercises-container"></div>
+
+    <div class="note-area" id="note-area">
+      <label>Заметка</label>
+      <textarea class="note-textarea" id="note-textarea" placeholder="Добавьте заметку к тренировке..."></textarea>
+    </div>
+  </div>
+
+  <div class="session-bottom">
+    <button class="btn-new-exercise" id="btn-new-exercise">＋ НОВОЕ УПРАЖНЕНИЕ</button>
+    <div class="session-actions">
+      <button class="btn-note" id="btn-add-note">📝 ЗАМЕТКА</button>
+      <button class="btn-finish" id="btn-finish-training">ЗАВЕРШИТЬ</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ TRAINING POPUP MODAL ══════════ -->
+<div class="modal-overlay" id="modal-training">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-title" id="modal-training-name">—</div>
+    <div class="modal-subtitle" id="modal-training-date">—</div>
+    <div class="modal-actions">
+      <button class="modal-btn edit" id="modal-btn-edit">✏️ Редактировать</button>
+      <button class="modal-btn share" id="modal-btn-share">↗ Поделиться</button>
+      <button class="modal-btn delete" id="modal-btn-delete">🗑 Удалить</button>
+      <button class="modal-btn cancel" id="modal-btn-cancel">Отмена</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ SHARE VIEW SCREEN ══════════ -->
+<div id="screen-share" class="screen">
+  <div class="share-hero">
+    <div class="share-hero-label">Запись тренировки</div>
+    <div class="share-hero-name" id="sv-name">—</div>
+    <div class="share-hero-date" id="sv-date">—</div>
+  </div>
+  <div class="share-body">
+    <button class="share-back-btn" id="sv-back-btn">← Вернуться в дневник</button>
+    <div id="sv-exercises"></div>
+    <div class="share-note-block" id="sv-note-block" style="display:none">
+      <div class="share-note-label">📝 Заметка</div>
+      <div class="share-note-text" id="sv-note-text"></div>
+    </div>
+    <div class="share-footer">🏋️ Дневник тренировок</div>
+  </div>
+</div>
+
+<!-- ══════════ SHARE MODAL ══════════ -->
+<div class="modal-overlay" id="modal-share">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-title">ПОДЕЛИТЬСЯ</div>
+    <div class="modal-subtitle">Ссылка на запись тренировки</div>
+    <div class="share-preview" id="share-preview"></div>
+    <button class="btn-open-link" id="btn-open-link">↗ ОТКРЫТЬ СТРАНИЦУ</button>
+    <button class="btn-copy" id="btn-copy-share">СКОПИРОВАТЬ ССЫЛКУ</button>
+    <button class="modal-btn cancel" id="modal-share-cancel">Закрыть</button>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ═══════════════════════════════════════════════
+// STORAGE (uses window.storage if available, else localStorage)
+// ═══════════════════════════════════════════════
+
+const STORAGE_KEY = 'gym-diary-v2';
+
+async function loadData() {
+  try {
+    if (window.storage) {
+      const r = await window.storage.get(STORAGE_KEY);
+      return r ? JSON.parse(r.value) : defaultData();
+    }
+  } catch(e) {}
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    return raw ? JSON.parse(raw) : defaultData();
+  } catch(e) { return defaultData(); }
+}
+
+async function saveData(data) {
+  try {
+    if (window.storage) {
+      await window.storage.set(STORAGE_KEY, JSON.stringify(data));
+      return;
+    }
+  } catch(e) {}
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); } catch(e) {}
+}
+
+function defaultData() {
+  return { trainings: [], trainingNames: [], exerciseNames: [] };
+}
+
+// ═══════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════
+let appData = defaultData();
+let currentViewDate = new Date();
+let sessionState = null; // { id, isEdit, trainingId }
+
+const MONTHS_RU = ['Январь','Февраль','Март','Апрель','Май','Июнь',
+                   'Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'];
+
+const MONTHS_RU_GEN = ['января','февраля','марта','апреля','мая','июня',
+                        'июля','августа','сентября','октября','ноября','декабря'];
+
+const WEEKDAYS_RU = ['понедельник','вторник','среда','четверг','пятница','суббота','воскресенье'];
+
+// ═══════════════════════════════════════════════
+// UTILS
+// ═══════════════════════════════════════════════
+function uid() { return Date.now().toString(36) + Math.random().toString(36).substr(2,5); }
+
+function formatDateFull(dateStr) {
+  const d = new Date(dateStr + 'T00:00:00');
+  const wd = (d.getDay() + 6) % 7;
+  return `${d.getDate()} ${MONTHS_RU_GEN[d.getMonth()]} ${d.getFullYear()}, ${WEEKDAYS_RU[wd]}`;
+}
+
+function todayStr() {
+  const d = new Date();
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.remove('show');
+  void t.offsetWidth;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2200);
+}
+
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('screen-' + id).classList.add('active');
+  window.scrollTo(0, 0);
+  if (id === 'front') renderCalendar();
+}
+
+function addToNameList(arr, name) {
+  name = name.trim();
+  if (!name) return arr;
+  if (!arr.includes(name)) arr.unshift(name);
+  return arr.slice(0, 40);
+}
+
+// ═══════════════════════════════════════════════
+// FRONT SCREEN – CALENDAR
+// ═══════════════════════════════════════════════
+function renderCalendar() {
+  const y = currentViewDate.getFullYear();
+  const m = currentViewDate.getMonth();
+  document.getElementById('cal-month-label').textContent = `${MONTHS_RU[m]} ${y}`;
+
+  const firstDay = new Date(y, m, 1);
+  const lastDay  = new Date(y, m+1, 0);
+  const startOffset = (firstDay.getDay() + 6) % 7; // Monday=0
+
+  const grid = document.getElementById('cal-grid');
+  grid.innerHTML = '';
+
+  const todayS = todayStr();
+
+  // Group trainings by date for this month
+  const byDate = {};
+  appData.trainings.forEach(t => {
+    if (t.date.startsWith(`${y}-${String(m+1).padStart(2,'0')}`)) {
+      if (!byDate[t.date]) byDate[t.date] = [];
+      byDate[t.date].push(t);
+    }
+  });
+
+  // Blank cells before first day
+  for (let i = 0; i < startOffset; i++) {
+    grid.appendChild(Object.assign(document.createElement('div'), { className: 'cal-day' }));
+  }
+
+  for (let d = 1; d <= lastDay.getDate(); d++) {
+    const dateStr = `${y}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    const cell = document.createElement('div');
+    cell.className = 'cal-day';
+    if (dateStr === todayS) cell.classList.add('today');
+
+    const dayNum = document.createElement('div');
+    dayNum.className = 'day-num';
+    dayNum.textContent = d;
+    cell.appendChild(dayNum);
+
+    if (byDate[dateStr] && byDate[dateStr].length > 0) {
+      cell.classList.add('has-training');
+      if (byDate[dateStr].length > 1) cell.classList.add('multiple-trainings');
+      const dot = document.createElement('div');
+      dot.className = 'training-dot';
+      cell.appendChild(dot);
+      cell.addEventListener('click', () => scrollToDateInList(dateStr));
+    }
+    grid.appendChild(cell);
+  }
+
+  renderTrainingList();
+}
+
+function renderTrainingList() {
+  const y = currentViewDate.getFullYear();
+  const m = currentViewDate.getMonth();
+  const prefix = `${y}-${String(m+1).padStart(2,'0')}`;
+
+  const monthTrainings = appData.trainings
+    .filter(t => t.date.startsWith(prefix))
+    .sort((a,b) => b.date.localeCompare(a.date));
+
+  const container = document.getElementById('training-list-container');
+  const title = document.getElementById('list-section-title');
+  title.textContent = `Тренировки — ${MONTHS_RU[m]} ${y}`;
+
+  if (monthTrainings.length === 0) {
+    container.innerHTML = `<div class="empty-state">
+      <div class="big-icon">🏋️</div>
+      <p>В этом месяце тренировок нет.<br>Нажмите «Начать тренировку»!</p>
+    </div>`;
+    return;
+  }
+
+  container.innerHTML = '';
+  monthTrainings.forEach(t => {
+    const card = document.createElement('div');
+    card.className = 'training-card';
+    card.dataset.id = t.id;
+
+    const exTags = (t.exercises || []).slice(0, 4).map(e =>
+      `<span class="exercise-tag">${e.name || '—'}</span>`
+    ).join('') + ((t.exercises||[]).length > 4 ? `<span class="exercise-tag">+${t.exercises.length-4}</span>` : '');
+
+    card.innerHTML = `
+      <div class="training-card-header">
+        <div class="training-card-name">${t.name || 'Без названия'}</div>
+        <div class="training-card-date">${formatDateFull(t.date)}</div>
+      </div>
+      <div class="training-card-exercises">${exTags || '<span style="font-size:11px;color:var(--text-dim)">Упражнений нет</span>'}</div>`;
+
+    card.addEventListener('click', () => openTrainingModal(t.id));
+    container.appendChild(card);
+  });
+}
+
+function scrollToDateInList(dateStr) {
+  const card = document.querySelector(`.training-card[data-id]`);
+  // find card for that date
+  const training = appData.trainings.find(t => t.date === dateStr);
+  if (!training) return;
+  const el = document.querySelector(`.training-card[data-id="${training.id}"]`);
+  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+// ═══════════════════════════════════════════════
+// TRAINING MODAL
+// ═══════════════════════════════════════════════
+let activeModalTrainingId = null;
+
+function openTrainingModal(id) {
+  const t = appData.trainings.find(x => x.id === id);
+  if (!t) return;
+  activeModalTrainingId = id;
+  document.getElementById('modal-training-name').textContent = t.name || 'Без названия';
+  document.getElementById('modal-training-date').textContent = formatDateFull(t.date);
+  document.getElementById('modal-training').classList.add('show');
+}
+
+document.getElementById('modal-btn-cancel').addEventListener('click', () => {
+  document.getElementById('modal-training').classList.remove('show');
+});
+
+document.getElementById('modal-btn-edit').addEventListener('click', () => {
+  document.getElementById('modal-training').classList.remove('show');
+  const t = appData.trainings.find(x => x.id === activeModalTrainingId);
+  if (t) openSession(true, t);
+});
+
+document.getElementById('modal-btn-delete').addEventListener('click', () => {
+  appData.trainings = appData.trainings.filter(x => x.id !== activeModalTrainingId);
+  saveData(appData);
+  document.getElementById('modal-training').classList.remove('show');
+  renderCalendar();
+  showToast('Тренировка удалена');
+});
+
+document.getElementById('modal-btn-share').addEventListener('click', () => {
+  document.getElementById('modal-training').classList.remove('show');
+  const t = appData.trainings.find(x => x.id === activeModalTrainingId);
+  if (t) openShareModal(t);
+});
+
+// close on overlay click
+document.getElementById('modal-training').addEventListener('click', function(e) {
+  if (e.target === this) this.classList.remove('show');
+});
+
+// ═══════════════════════════════════════════════
+// SHARE MODAL
+// ═══════════════════════════════════════════════
+// ── SHARE SCREEN RENDERER ─────────────────────────────────────────
+const MONTHS_GEN_SHARE = ['января','февраля','марта','апреля','мая','июня','июля','августа','сентября','октября','ноября','декабря'];
+const WDS_SHARE = ['понедельник','вторник','среда','четверг','пятница','суббота','воскресенье'];
+
+function renderShareScreen(t) {
+  const d = new Date(t.date + 'T00:00:00');
+  const wd = (d.getDay() + 6) % 7;
+  const dateLabel = `📅 ${d.getDate()} ${MONTHS_GEN_SHARE[d.getMonth()]} ${d.getFullYear()}, ${WDS_SHARE[wd]}`;
+
+  document.getElementById('sv-name').textContent = t.name || 'Без названия';
+  document.getElementById('sv-date').textContent = dateLabel;
+
+  const exContainer = document.getElementById('sv-exercises');
+  exContainer.innerHTML = '';
+
+  (t.exercises || []).forEach((ex, i) => {
+    const validSets = (ex.sets || []).filter(s => s.weight || s.reps);
+    const block = document.createElement('div');
+    block.className = 'share-ex-block';
+
+    let setsHTML = '';
+    if (validSets.length) {
+      setsHTML = `
+        <div class="share-sets-header">
+          <span>Сет</span><span>Вес</span><span>Повторения</span>
+        </div>` +
+        validSets.map(s => `
+        <div class="share-set-row">
+          <div class="share-set-num">${s.num}</div>
+          <div class="share-set-weight">${s.weight ? s.weight + ' кг' : '—'}</div>
+          <div class="share-set-reps">${s.reps ? s.reps + ' повт.' : '—'}</div>
+        </div>`).join('');
+    } else {
+      setsHTML = `<div style="padding:12px 16px;font-size:13px;color:var(--text-dim)">Сеты не записаны</div>`;
+    }
+
+    block.innerHTML = `
+      <div class="share-ex-title">
+        <span class="share-ex-num">#${i+1}</span>${ex.name || 'Упражнение'}
+      </div>${setsHTML}`;
+    exContainer.appendChild(block);
+  });
+
+  // Note
+  const noteBlock = document.getElementById('sv-note-block');
+  if (t.note && t.note.trim()) {
+    document.getElementById('sv-note-text').textContent = t.note;
+    noteBlock.style.display = 'block';
+  } else {
+    noteBlock.style.display = 'none';
+  }
+
+  showScreen('share');
+}
+
+// Back button on share screen
+document.getElementById('sv-back-btn').addEventListener('click', () => {
+  window.location.hash = '';
+  showScreen('front');
+});
+
+// ── SHARE MODAL ───────────────────────────────────────────────────
+let currentShareTraining = null;
+let currentShareURL = '';
+
+function openShareModal(t) {
+  currentShareTraining = t;
+
+  // Build hash URL pointing to this same file
+  const data = btoa(unescape(encodeURIComponent(JSON.stringify(t))));
+  const fileURL = window.location.href.split('#')[0];
+  currentShareURL = fileURL + '#share=' + data;
+
+  // Preview
+  const d = new Date(t.date + 'T00:00:00');
+  const exNames = (t.exercises || []).map(e => e.name).filter(Boolean).slice(0, 3).join(', ');
+  const exMore = (t.exercises || []).length > 3 ? ` +${t.exercises.length - 3}` : '';
+  document.getElementById('share-preview').innerHTML =
+    `<strong>${t.name || 'Без названия'}</strong><br>` +
+    `${d.getDate()} ${MONTHS_GEN_SHARE[d.getMonth()]} ${d.getFullYear()}<br>` +
+    (exNames ? `Упражнения: ${exNames}${exMore}` : 'Упражнения не записаны');
+
+  document.getElementById('modal-share').classList.add('show');
+}
+
+document.getElementById('btn-open-link').addEventListener('click', () => {
+  document.getElementById('modal-share').classList.remove('show');
+  if (currentShareTraining) renderShareScreen(currentShareTraining);
+});
+
+document.getElementById('modal-share-cancel').addEventListener('click', () => {
+  document.getElementById('modal-share').classList.remove('show');
+});
+
+document.getElementById('modal-share').addEventListener('click', function(e) {
+  if (e.target === this) this.classList.remove('show');
+});
+
+document.getElementById('btn-copy-share').addEventListener('click', () => {
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(currentShareURL)
+      .then(() => showToast('Ссылка скопирована!'))
+      .catch(() => fallbackCopy(currentShareURL));
+  } else { fallbackCopy(currentShareURL); }
+});
+
+function fallbackCopy(text) {
+  const ta = document.createElement('textarea');
+  ta.value = text;
+  document.body.appendChild(ta);
+  ta.select();
+  document.execCommand('copy');
+  document.body.removeChild(ta);
+  showToast('Ссылка скопирована!');
+}
+
+// ── CHECK HASH ON LOAD (for shared links) ────────────────────────
+function checkHashOnLoad() {
+  const hash = window.location.hash;
+  if (hash.startsWith('#share=')) {
+    try {
+      const encoded = hash.slice(7);
+      const json = decodeURIComponent(escape(atob(encoded)));
+      const t = JSON.parse(json);
+      renderShareScreen(t);
+    } catch(e) {
+      console.warn('Invalid share link', e);
+    }
+  }
+}
+
+// ═══════════════════════════════════════════════
+// SESSION SCREEN
+// ═══════════════════════════════════════════════
+function openSession(isEdit = false, existingTraining = null) {
+  const now = new Date();
+  const dateStr = isEdit ? existingTraining.date : todayStr();
+
+  sessionState = {
+    isEdit,
+    trainingId: isEdit ? existingTraining.id : uid(),
+    date: dateStr,
+  };
+
+  // Header
+  document.getElementById('session-date-badge').textContent = formatDateFull(dateStr);
+
+  // Name
+  const nameInput = document.getElementById('session-name-input');
+  nameInput.value = isEdit ? (existingTraining.name || '') : '';
+
+  // Note
+  const noteArea = document.getElementById('note-area');
+  const noteTa = document.getElementById('note-textarea');
+  if (isEdit && existingTraining.note) {
+    noteTa.value = existingTraining.note;
+    noteArea.classList.add('show');
+  } else {
+    noteTa.value = '';
+    noteArea.classList.remove('show');
+  }
+
+  // Exercises
+  const container = document.getElementById('exercises-container');
+  container.innerHTML = '';
+
+  if (isEdit && existingTraining.exercises && existingTraining.exercises.length > 0) {
+    existingTraining.exercises.forEach(ex => addExerciseBlock(ex));
+  }
+
+  showScreen('session');
+}
+
+// Autocomplete for training name
+const sessionNameInput = document.getElementById('session-name-input');
+const sessionNameAC = document.getElementById('session-name-ac');
+
+sessionNameInput.addEventListener('input', () => {
+  const val = sessionNameInput.value.trim().toLowerCase();
+  if (!val) { sessionNameAC.classList.remove('show'); return; }
+  const matches = appData.trainingNames.filter(n => n.toLowerCase().includes(val));
+  renderACList(sessionNameAC, matches, name => {
+    sessionNameInput.value = name;
+    sessionNameAC.classList.remove('show');
+  });
+});
+
+sessionNameInput.addEventListener('blur', () => setTimeout(() => sessionNameAC.classList.remove('show'), 200));
+
+function renderACList(el, items, onSelect) {
+  el.innerHTML = '';
+  if (items.length === 0) { el.classList.remove('show'); return; }
+  items.slice(0, 8).forEach(item => {
+    const div = document.createElement('div');
+    div.className = 'autocomplete-item';
+    div.textContent = item;
+    div.addEventListener('mousedown', (e) => { e.preventDefault(); onSelect(item); });
+    el.appendChild(div);
+  });
+  el.classList.add('show');
+}
+
+// NEW EXERCISE button
+document.getElementById('btn-new-exercise').addEventListener('click', () => {
+  addExerciseBlock(null);
+  setTimeout(() => {
+    const blocks = document.querySelectorAll('.exercise-block');
+    if (blocks.length) {
+      const lastBlock = blocks[blocks.length - 1];
+      const firstRow = lastBlock.querySelector('.set-row');
+      const target = firstRow || lastBlock;
+      target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }, 100);
+});
+
+// NOTE button
+document.getElementById('btn-add-note').addEventListener('click', () => {
+  const na = document.getElementById('note-area');
+  na.classList.toggle('show');
+  if (na.classList.contains('show')) document.getElementById('note-textarea').focus();
+});
+
+// ADD EXERCISE
+let exerciseCounter = 0;
+function addExerciseBlock(existingEx) {
+  exerciseCounter++;
+  const allBlocks = document.querySelectorAll('.exercise-block');
+  const exNum = allBlocks.length + 1;
+
+  const block = document.createElement('div');
+  block.className = 'exercise-block';
+
+  const exId = uid();
+  block.dataset.exid = exId;
+
+  block.innerHTML = `
+    <div class="exercise-header">
+      <div class="exercise-number">#${exNum}</div>
+      <div class="exercise-name-wrap">
+        <input type="text" class="exercise-name-input" placeholder="Название упражнения" autocomplete="off" value="${existingEx ? (existingEx.name || '') : ''}">
+        <div class="autocomplete-list ex-ac"></div>
+      </div>
+      <button class="btn-remove-exercise" title="Удалить">✕</button>
+    </div>
+    <div class="sets-table">
+      <div class="sets-header">
+        <span>Сет</span><span>Вес (кг)</span><span>Повторения</span>
+      </div>
+      <div class="sets-container"></div>
+    </div>`;
+
+  const nameInput = block.querySelector('.exercise-name-input');
+  const acList = block.querySelector('.ex-ac');
+  const setsContainer = block.querySelector('.sets-container');
+  const removeBtn = block.querySelector('.btn-remove-exercise');
+
+  // Exercise name autocomplete
+  nameInput.addEventListener('input', () => {
+    const val = nameInput.value.trim().toLowerCase();
+    if (!val) { acList.classList.remove('show'); return; }
+    const matches = appData.exerciseNames.filter(n => n.toLowerCase().includes(val));
+    renderACList(acList, matches, name => { nameInput.value = name; acList.classList.remove('show'); });
+  });
+  nameInput.addEventListener('blur', () => setTimeout(() => acList.classList.remove('show'), 200));
+
+  // Remove exercise
+  removeBtn.addEventListener('click', () => {
+    block.remove();
+    // Renumber
+    document.querySelectorAll('.exercise-block .exercise-number').forEach((el, i) => {
+      el.textContent = `#${i+1}`;
+    });
+  });
+
+  document.getElementById('exercises-container').appendChild(block);
+
+  // Add sets
+  if (existingEx && existingEx.sets && existingEx.sets.length > 0) {
+    existingEx.sets.forEach(s => addSetRow(setsContainer, s.weight, s.reps));
+  } else {
+    addSetRow(setsContainer, '', '');
+  }
+}
+
+function addSetRow(container, weight, reps) {
+  const setNum = container.querySelectorAll('.set-row').length + 1;
+  const row = document.createElement('div');
+  row.className = 'set-row';
+
+  row.innerHTML = `
+    <div class="set-num">${setNum}</div>
+    <input type="number" class="set-input weight-input" placeholder="—" value="${weight || ''}" inputmode="decimal" min="0" step="0.5">
+    <input type="number" class="set-input reps-input" placeholder="—" value="${reps || ''}" inputmode="numeric" min="0">`;
+
+  const weightInput = row.querySelector('.weight-input');
+  const repsInput = row.querySelector('.reps-input');
+
+  function checkAutoAdd() {
+    const isLastRow = !row.nextElementSibling;
+    if (isLastRow && weightInput.value.trim() && repsInput.value.trim()) {
+      const newRow = addSetRow(container, '', '');
+      // Scroll the new empty row into view smoothly
+      setTimeout(() => {
+        newRow.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 60);
+    }
+  }
+
+  weightInput.addEventListener('change', checkAutoAdd);
+  repsInput.addEventListener('change', checkAutoAdd);
+  repsInput.addEventListener('blur', checkAutoAdd);
+
+  container.appendChild(row);
+  return row;
+}
+
+// FINISH TRAINING
+document.getElementById('btn-finish-training').addEventListener('click', async () => {
+  const name = document.getElementById('session-name-input').value.trim();
+  const note = document.getElementById('note-textarea').value.trim();
+
+  const exercises = [];
+  document.querySelectorAll('.exercise-block').forEach(block => {
+    const exName = block.querySelector('.exercise-name-input').value.trim();
+    const sets = [];
+    block.querySelectorAll('.set-row').forEach((row, i) => {
+      const w = row.querySelector('.weight-input').value.trim();
+      const r = row.querySelector('.reps-input').value.trim();
+      if (w || r) {
+        sets.push({ num: i+1, weight: w, reps: r });
+      }
+    });
+    if (exName || sets.length) {
+      exercises.push({ name: exName, sets });
+    }
+  });
+
+  // Update name lists
+  if (name) appData.trainingNames = addToNameList(appData.trainingNames, name);
+  exercises.forEach(ex => {
+    if (ex.name) appData.exerciseNames = addToNameList(appData.exerciseNames, ex.name);
+  });
+
+  const training = {
+    id: sessionState.trainingId,
+    date: sessionState.date,
+    name: name || 'Без названия',
+    exercises,
+    note,
+    createdAt: Date.now(),
+  };
+
+  if (sessionState.isEdit) {
+    const idx = appData.trainings.findIndex(t => t.id === sessionState.trainingId);
+    if (idx !== -1) appData.trainings[idx] = training;
+    else appData.trainings.push(training);
+  } else {
+    appData.trainings.push(training);
+  }
+
+  // Set calendar view to training month
+  const td = new Date(training.date + 'T00:00:00');
+  currentViewDate = new Date(td.getFullYear(), td.getMonth(), 1);
+
+  await saveData(appData);
+  renderCalendar();
+  showScreen('front');
+  showToast(sessionState.isEdit ? 'Тренировка обновлена!' : 'Тренировка сохранена!');
+});
+
+// ═══════════════════════════════════════════════
+// CALENDAR NAVIGATION
+// ═══════════════════════════════════════════════
+document.getElementById('btn-prev-month').addEventListener('click', () => {
+  currentViewDate.setMonth(currentViewDate.getMonth() - 1);
+  renderCalendar();
+});
+document.getElementById('btn-next-month').addEventListener('click', () => {
+  currentViewDate.setMonth(currentViewDate.getMonth() + 1);
+  renderCalendar();
+});
+
+document.getElementById('btn-start-training').addEventListener('click', () => {
+  openSession(false, null);
+});
+
+// ═══════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════
+async function init() {
+  appData = await loadData();
+  currentViewDate = new Date();
+  checkHashOnLoad();
+  // If no hash route matched, render the front screen normally
+  if (!window.location.hash.startsWith('#share=')) {
+    renderCalendar();
+  }
+}
+
+init();
+</script>
+</body>
+</html>
