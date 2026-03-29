@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+  <!DOCTYPE html>
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
@@ -459,6 +459,19 @@
 
   .btn-remove-exercise:hover { opacity: 1; }
 
+  .ex-pr-badge {
+    background: var(--surface3);
+    border: 1px solid var(--accent2);
+    border-radius: var(--radius-sm);
+    color: var(--accent2);
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 8px;
+    white-space: nowrap;
+    letter-spacing: 0.5px;
+    flex-shrink: 0;
+  }
+
   /* Sets table */
   .sets-table { width: 100%; padding: 10px 12px 12px; }
 
@@ -543,6 +556,26 @@
   }
 
   .btn-new-exercise:hover { border-color: var(--accent2); color: var(--accent2); }
+
+  .btn-add-set {
+    width: 100%;
+    background: transparent;
+    border: 1px dashed var(--border);
+    color: var(--text-dim);
+    border-radius: var(--radius-sm);
+    padding: 9px;
+    font-family: 'Raleway', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: border-color 0.2s, color 0.2s;
+    margin-top: 6px;
+    display: block;
+  }
+
+  .btn-add-set:hover { border-color: var(--accent2); color: var(--accent2); }
+  .btn-add-set.hidden { display: none; }
 
   .session-actions {
     display: grid;
@@ -1072,20 +1105,19 @@
   /* ══════════════ REST TIMER ══════════════ */
   .rest-timer {
     position: fixed;
-    bottom: 100px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: var(--surface);
-    border: 2px solid var(--accent2);
-    border-radius: var(--radius);
-    padding: 16px 24px;
-    box-shadow: 0 8px 32px rgba(0,0,0,0.6);
-    z-index: 100;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: #0a0b0e;
+    border-bottom: 2px solid var(--accent2);
+    padding: 10px 20px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.7);
+    z-index: 200;
     display: none;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
+    justify-content: space-between;
     gap: 12px;
-    min-width: 200px;
   }
 
   .rest-timer.show { display: flex; }
@@ -1095,14 +1127,17 @@
     letter-spacing: 2px;
     text-transform: uppercase;
     color: var(--text-dim);
+    white-space: nowrap;
   }
 
   .rest-timer-time {
     font-family: 'Bebas Neue', sans-serif;
-    font-size: 48px;
+    font-size: 32px;
     letter-spacing: 2px;
     color: var(--accent2);
     line-height: 1;
+    flex: 1;
+    text-align: center;
   }
 
   .rest-timer-controls {
@@ -2032,6 +2067,7 @@ function addExerciseBlock(existingEx) {
         <input type="text" class="exercise-name-input" placeholder="Название упражнения" autocomplete="off" value="${existingEx ? (existingEx.name || '') : ''}">
         <div class="autocomplete-list ex-ac"></div>
       </div>
+      <div class="ex-pr-badge" style="display:none"></div>
       <button class="btn-remove-exercise" title="Удалить">✕</button>
     </div>
     <div class="sets-table">
@@ -2039,12 +2075,37 @@ function addExerciseBlock(existingEx) {
         <span>Сет</span><span>Вес (кг)</span><span>Повторения</span>
       </div>
       <div class="sets-container"></div>
+      <button class="btn-add-set">+ НОВЫЙ ПОДХОД</button>
     </div>`;
 
   const nameInput = block.querySelector('.exercise-name-input');
   const acList = block.querySelector('.ex-ac');
   const setsContainer = block.querySelector('.sets-container');
   const removeBtn = block.querySelector('.btn-remove-exercise');
+  const addSetBtn = block.querySelector('.btn-add-set');
+  const prBadge = block.querySelector('.ex-pr-badge');
+
+  function updatePRBadge(name) {
+    const prs = calculatePRs(name);
+    if (prs && prs.bestWeight) {
+      prBadge.textContent = `🏆 ${prs.bestWeight} кг`;
+      prBadge.style.display = 'block';
+    } else {
+      prBadge.style.display = 'none';
+    }
+  }
+
+  // Show badge if editing existing exercise with a name
+  if (existingEx && existingEx.name) updatePRBadge(existingEx.name);
+
+  // Hide the НОВЫЙ ПОДХОД button on all previous exercise blocks
+  document.querySelectorAll('.exercise-block .btn-add-set').forEach(btn => btn.classList.add('hidden'));
+
+  // Wire up НОВЫЙ ПОДХОД button
+  addSetBtn.addEventListener('click', () => {
+    const newRow = addSetRow(setsContainer, '', '');
+    setTimeout(() => newRow.scrollIntoView({ behavior: 'smooth', block: 'center' }), 60);
+  });
 
   // Click exercise name to see progress
   nameInput.addEventListener('dblclick', () => {
@@ -2066,9 +2127,14 @@ function addExerciseBlock(existingEx) {
   // Exercise name autocomplete
   nameInput.addEventListener('input', () => {
     const val = nameInput.value.trim().toLowerCase();
+    updatePRBadge(nameInput.value.trim());
     if (!val) { acList.classList.remove('show'); return; }
     const matches = appData.exerciseNames.filter(n => n.toLowerCase().includes(val));
-    renderACList(acList, matches, name => { nameInput.value = name; acList.classList.remove('show'); });
+    renderACList(acList, matches, name => {
+      nameInput.value = name;
+      acList.classList.remove('show');
+      updatePRBadge(name);
+    });
   });
   nameInput.addEventListener('blur', () => setTimeout(() => acList.classList.remove('show'), 200));
 
@@ -2079,6 +2145,10 @@ function addExerciseBlock(existingEx) {
     document.querySelectorAll('.exercise-block .exercise-number').forEach((el, i) => {
       el.textContent = `#${i+1}`;
     });
+    // Show btn-add-set only on last remaining block
+    const remaining = document.querySelectorAll('.exercise-block .btn-add-set');
+    remaining.forEach(btn => btn.classList.add('hidden'));
+    if (remaining.length > 0) remaining[remaining.length - 1].classList.remove('hidden');
   });
 
   document.getElementById('exercises-container').appendChild(block);
@@ -2104,36 +2174,22 @@ function addSetRow(container, weight, reps) {
   const weightInput = row.querySelector('.weight-input');
   const repsInput = row.querySelector('.reps-input');
 
-  function checkAutoAdd() {
-    const isLastRow = !row.nextElementSibling;
-    if (isLastRow && weightInput.value.trim() && repsInput.value.trim()) {
-      // Get exercise name
-      const exerciseBlock = container.closest('.exercise-block');
-      const exerciseName = exerciseBlock?.querySelector('.exercise-name-input')?.value?.trim();
-      
-      // Check for PR
-      if (exerciseName) {
-        const isPRSet = isPR(exerciseName, weightInput.value, repsInput.value);
-        if (isPRSet) {
-          showToast('🏆 Новый рекорд!');
-        }
-      }
-      
-      // Start rest timer
-      startRestTimer(appData.restTimer || 90);
-      
-      // Add new row
-      const newRow = addSetRow(container, '', '');
-      // Scroll the new empty row into view smoothly
-      setTimeout(() => {
-        newRow.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      }, 60);
+  function checkWeightFilled() {
+    const w = weightInput.value.trim();
+    if (!w) return;
+    const exerciseBlock = container.closest('.exercise-block');
+    const exerciseName = exerciseBlock?.querySelector('.exercise-name-input')?.value?.trim();
+    const r = repsInput.value.trim();
+    // PR check (only if reps also filled)
+    if (exerciseName && r) {
+      if (isPR(exerciseName, w, r)) showToast('🏆 Новый рекорд!');
     }
+    // Start rest timer and scroll to bottom buttons
+    startRestTimer(appData.restTimer || 90);
   }
 
-  weightInput.addEventListener('change', checkAutoAdd);
-  repsInput.addEventListener('change', checkAutoAdd);
-  repsInput.addEventListener('blur', checkAutoAdd);
+  weightInput.addEventListener('change', checkWeightFilled);
+  weightInput.addEventListener('blur', checkWeightFilled);
 
   container.appendChild(row);
   return row;
@@ -2224,10 +2280,17 @@ function startRestTimer(seconds = 90) {
   restTimerRemaining = seconds;
   
   const timerEl = document.getElementById('rest-timer');
-  const timeEl = document.getElementById('rest-timer-time');
   
   timerEl.classList.add('show');
   updateTimerDisplay();
+
+  // Scroll so the session bottom buttons are visible
+  setTimeout(() => {
+    const sessionBottom = document.querySelector('.session-bottom');
+    if (sessionBottom) {
+      sessionBottom.scrollIntoView({ behavior: 'smooth', block: 'end' });
+    }
+  }, 80);
   
   restTimerInterval = setInterval(() => {
     restTimerRemaining--;
@@ -2235,7 +2298,6 @@ function startRestTimer(seconds = 90) {
     
     if (restTimerRemaining <= 0) {
       stopRestTimer();
-      // Beep sound (vibrate on mobile)
       if (navigator.vibrate) navigator.vibrate([200, 100, 200]);
       showToast('Отдых завершён!');
     }
