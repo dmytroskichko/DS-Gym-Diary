@@ -2807,25 +2807,26 @@ document.getElementById('modal-draft-discard').addEventListener('click', async (
   showToast('Тренировка удалена');
 });
 // ═══════════════════════════════════════════════
-const JSONBIN_API = 'https://api.jsonbin.io/v3';
-const JSONBIN_KEY = '$2a$10$placeholder'; // will be replaced per-user bin
-const TRAINER_BIN_KEY = 'gym-diary-trainer-bin';
+const NPOINT_API = 'https://api.npoint.io';
 
 function getTrainerBinId() { return appData.trainerBinId || null; }
 
 async function createTrainerBin() {
   const payload = { trainings: appData.trainings, userName: appData.userName || '', updatedAt: Date.now() };
   try {
-    const res = await fetch(`${JSONBIN_API}/b`, {
+    const res = await fetch(`${NPOINT_API}/bins`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'X-Bin-Private': 'false', 'X-Bin-Name': 'gym-diary-trainer' },
-      body: JSON.stringify(payload)
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ data: payload })
     });
-    const data = await res.json();
-    if (data.metadata && data.metadata.id) {
-      return data.metadata.id;
+    console.log('npoint status:', res.status, res.statusText);
+    const text = await res.text();
+    console.log('npoint response:', text);
+    if (res.ok) {
+      const data = JSON.parse(text);
+      if (data.id) return data.id;
     }
-  } catch(e) { console.error('JSONBin create error', e); }
+  } catch(e) { console.error('npoint create error', e.message, e); }
   return null;
 }
 
@@ -2834,13 +2835,13 @@ async function syncTrainerBin() {
   if (!binId) return false;
   const payload = { trainings: appData.trainings, userName: appData.userName || '', updatedAt: Date.now() };
   try {
-    const res = await fetch(`${JSONBIN_API}/b/${binId}`, {
-      method: 'PUT',
+    const res = await fetch(`${NPOINT_API}/bins/${binId}`, {
+      method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload)
+      body: JSON.stringify({ data: payload })
     });
     return res.ok;
-  } catch(e) { console.error('JSONBin sync error', e); return false; }
+  } catch(e) { console.error('npoint sync error', e); return false; }
 }
 
 function getTrainerURL(binId) {
@@ -2914,9 +2915,9 @@ let trainerViewDate = new Date();
 
 async function loadTrainerView(binId) {
   try {
-    const res = await fetch(`${JSONBIN_API}/b/${binId}/latest`);
+    const res = await fetch(`${NPOINT_API}/${binId}`);
     const data = await res.json();
-    trainerData = data.record;
+    trainerData = data;
     trainerViewDate = new Date();
     const name = trainerData.userName ? `ДНЕВНИК — ${trainerData.userName.toUpperCase()}` : 'ДНЕВНИК';
     document.getElementById('trainer-header-title').textContent = name;
