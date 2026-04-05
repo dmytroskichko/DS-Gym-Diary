@@ -2814,17 +2814,19 @@ function getTrainerBinId() { return appData.trainerBinId || null; }
 async function createTrainerBin() {
   const payload = { trainings: appData.trainings, userName: appData.userName || '', updatedAt: Date.now() };
   try {
-    const res = await fetch(`${NPOINT_API}/bins`, {
+    const res = await fetch(`${NPOINT_API}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ data: payload })
+      body: JSON.stringify(payload)
     });
     console.log('npoint status:', res.status, res.statusText);
     const text = await res.text();
     console.log('npoint response:', text);
     if (res.ok) {
       const data = JSON.parse(text);
-      if (data.id) return data.id;
+      // npoint returns the ID directly or as data.id
+      const id = data.id || data._id || data.token;
+      if (id) return String(id);
     }
   } catch(e) { console.error('npoint create error', e.message, e); }
   return null;
@@ -2835,11 +2837,12 @@ async function syncTrainerBin() {
   if (!binId) return false;
   const payload = { trainings: appData.trainings, userName: appData.userName || '', updatedAt: Date.now() };
   try {
-    const res = await fetch(`${NPOINT_API}/bins/${binId}`, {
+    const res = await fetch(`${NPOINT_API}/${binId}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ data: payload })
+      body: JSON.stringify(payload)
     });
+    console.log('npoint sync status:', res.status);
     return res.ok;
   } catch(e) { console.error('npoint sync error', e); return false; }
 }
