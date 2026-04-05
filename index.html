@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- v6 -->
+<!-- v7 -->
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
@@ -2705,6 +2705,7 @@ document.getElementById('settings-rest-time').addEventListener('change', async (
 // Save GitHub token
 document.getElementById('settings-github-token').addEventListener('change', async (e) => {
   appData.githubToken = e.target.value.trim();
+  console.log('token saved, length:', appData.githubToken.length);
   await saveData(appData);
   showToast('Токен сохранён');
 });
@@ -2829,6 +2830,7 @@ async function createTrainerBin() {
 
 async function syncTrainerBin() {
   const token = getGithubToken();
+  console.log('token length:', token.length, 'first 4:', token.slice(0,4));
   if (!token) { showToast('Введите GitHub токен в настройках'); return false; }
   const payload = { trainings: appData.trainings, userName: appData.userName || '', updatedAt: Date.now() };
   const content = btoa(unescape(encodeURIComponent(JSON.stringify(payload, null, 2))));
