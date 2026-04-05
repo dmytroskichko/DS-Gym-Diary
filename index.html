@@ -2807,23 +2807,25 @@ document.getElementById('modal-draft-discard').addEventListener('click', async (
   showToast('Тренировка удалена');
 });
 // ═══════════════════════════════════════════════
-const JSONBLOB_API = 'https://jsonblob.com/api/jsonBlob';
+const JSONBIN_API = 'https://api.jsonbin.io/v3';
+const JSONBIN_KEY = '$2a$10$placeholder'; // will be replaced per-user bin
+const TRAINER_BIN_KEY = 'gym-diary-trainer-bin';
 
 function getTrainerBinId() { return appData.trainerBinId || null; }
 
 async function createTrainerBin() {
   const payload = { trainings: appData.trainings, userName: appData.userName || '', updatedAt: Date.now() };
   try {
-    const res = await fetch(JSONBLOB_API, {
+    const res = await fetch(`${JSONBIN_API}/b`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'X-Bin-Private': 'false', 'X-Bin-Name': 'gym-diary-trainer' },
       body: JSON.stringify(payload)
     });
-    if (res.ok) {
-      const location = res.headers.get('Location');
-      if (location) return location.split('/').pop();
+    const data = await res.json();
+    if (data.metadata && data.metadata.id) {
+      return data.metadata.id;
     }
-  } catch(e) { console.error('jsonblob create error', e); }
+  } catch(e) { console.error('JSONBin create error', e); }
   return null;
 }
 
@@ -2832,13 +2834,13 @@ async function syncTrainerBin() {
   if (!binId) return false;
   const payload = { trainings: appData.trainings, userName: appData.userName || '', updatedAt: Date.now() };
   try {
-    const res = await fetch(`${JSONBLOB_API}/${binId}`, {
+    const res = await fetch(`${JSONBIN_API}/b/${binId}`, {
       method: 'PUT',
-      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload)
     });
     return res.ok;
-  } catch(e) { console.error('jsonblob sync error', e); return false; }
+  } catch(e) { console.error('JSONBin sync error', e); return false; }
 }
 
 function getTrainerURL(binId) {
@@ -2912,11 +2914,9 @@ let trainerViewDate = new Date();
 
 async function loadTrainerView(binId) {
   try {
-    const res = await fetch(`${JSONBLOB_API}/${binId}`, {
-      headers: { 'Accept': 'application/json' }
-    });
+    const res = await fetch(`${JSONBIN_API}/b/${binId}/latest`);
     const data = await res.json();
-    trainerData = data;
+    trainerData = data.record;
     trainerViewDate = new Date();
     const name = trainerData.userName ? `ДНЕВНИК — ${trainerData.userName.toUpperCase()}` : 'ДНЕВНИК';
     document.getElementById('trainer-header-title').textContent = name;
