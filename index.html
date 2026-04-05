@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- v7 -->
+<!-- v8 -->
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
@@ -1478,7 +1478,11 @@
       <div class="settings-section-title">Ссылка для тренера</div>
       <div class="settings-input-group" style="margin-bottom:10px;">
         <label class="settings-label">GitHub токен (хранится только на устройстве)</label>
-        <input type="password" class="settings-input" id="settings-github-token" placeholder="ghp_...">
+        <input type="text" class="settings-input" id="settings-github-token" placeholder="ghp_..." style="margin-bottom:8px;">
+        <button class="settings-button" id="settings-token-save-btn" style="margin-bottom:0;">
+          <span class="settings-button-icon">💾</span>
+          <span class="settings-button-label">Сохранить токен</span>
+        </button>
       </div>
         <div id="trainer-link-box" style="display:none; margin-top:10px;">
           <div id="trainer-link-text" style="font-size:11px; color:var(--accent2); word-break:break-all; margin-bottom:10px; line-height:1.6;"></div>
@@ -2702,12 +2706,15 @@ document.getElementById('settings-rest-time').addEventListener('change', async (
   }
 });
 
-// Save GitHub token
-document.getElementById('settings-github-token').addEventListener('change', async (e) => {
-  appData.githubToken = e.target.value.trim();
-  console.log('token saved, length:', appData.githubToken.length);
+// Save GitHub token button
+document.getElementById('settings-token-save-btn').addEventListener('click', async () => {
+  const val = document.getElementById('settings-github-token').value.trim();
+  if (!val) { showToast('Введите токен'); return; }
+  appData.githubToken = val;
+  console.log('token saved, length:', appData.githubToken.length, 'starts:', val.slice(0,4));
   await saveData(appData);
-  showToast('Токен сохранён');
+  updateTrainerSettingsUI();
+  showToast('Токен сохранён!');
 });
 document.getElementById('settings-export-btn').addEventListener('click', () => {
   const dataStr = JSON.stringify(appData, null, 2);
