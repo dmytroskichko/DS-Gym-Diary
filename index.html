@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!-- v6 -->
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
@@ -1476,7 +1477,9 @@
     <div class="settings-section">
       <div class="settings-section-title">Ссылка для тренера</div>
       <div class="settings-input-group" style="margin-bottom:10px;">
-        <label class="settings-label">Тренер видит все тренировки в режиме просмотра (без редактирования). Данные обновляются автоматически.</label>
+        <label class="settings-label">GitHub токен (хранится только на устройстве)</label>
+        <input type="password" class="settings-input" id="settings-github-token" placeholder="ghp_...">
+      </div>
         <div id="trainer-link-box" style="display:none; margin-top:10px;">
           <div id="trainer-link-text" style="font-size:11px; color:var(--accent2); word-break:break-all; margin-bottom:10px; line-height:1.6;"></div>
         </div>
@@ -2673,6 +2676,7 @@ function drawProgressChart(canvasId, data, metric) {
 document.getElementById('btn-settings').addEventListener('click', () => {
   document.getElementById('settings-user-name').value = appData.userName || '';
   document.getElementById('settings-rest-time').value = appData.restTimer || 90;
+  document.getElementById('settings-github-token').value = appData.githubToken || '';
   updateTrainerSettingsUI();
   showScreen('settings');
 });
@@ -2698,7 +2702,12 @@ document.getElementById('settings-rest-time').addEventListener('change', async (
   }
 });
 
-// Export button in settings
+// Save GitHub token
+document.getElementById('settings-github-token').addEventListener('change', async (e) => {
+  appData.githubToken = e.target.value.trim();
+  await saveData(appData);
+  showToast('Токен сохранён');
+});
 document.getElementById('settings-export-btn').addEventListener('click', () => {
   const dataStr = JSON.stringify(appData, null, 2);
   const blob = new Blob([dataStr], { type: 'application/json' });
@@ -2807,26 +2816,64 @@ document.getElementById('modal-draft-discard').addEventListener('click', async (
   showToast('Тренировка удалена');
 });
 // ═══════════════════════════════════════════════
-const NPOINT_API = 'https://api.npoint.io';
+const GITHUB_REPO = 'dmytroskichko/DS-Gym-Diary';
+const GITHUB_FILE = 'trainer-data.json';
+const GITHUB_API = `https://api.github.com/repos/${GITHUB_REPO}/contents/${GITHUB_FILE}`;
+
+function getGithubToken() { return appData.githubToken || ''; }
+function getTrainerBinId() { return 'github'; } // always use github
+
+async function createTrainerBin() {
+  return await syncTrainerBin() ? 'github' : null;
+}
+
+async function syncTrainerBin() {
+  const token = getGithubToken();
+  if (!token) { showToast('Введите GitHub токен в настройках'); return false; }
+  const payload = { trainings: appData.trainings, userName: appData.userName || '', updatedAt: Date.now() };
+  const content = btoa(unescape(encodeURIComponent(JSON.stringify(payload, null, 2))));
+  try {
+    // Get current file SHA (needed for update)
+    let sha = null;
+    const getRes = await fetch(GITHUB_API, {
+      headers: { 'Authorization': `token ${token}`, 'Accept': 'application/vnd.github.v3+json' }
+    });
+    if (getRes.ok) {
+      const getData = await getRes.json();
+      sha = getData.sha;
+    }
+    // Create or update file
+    const body = { message: 'Update trainer data', content };
+    if (sha) body.sha = sha;
+    const res = await fetch(GITHUB_API, {
+      method: 'PUT',
+      headers: { 'Authorization': `token ${token}`, 'Content-Type': 'application/json', 'Accept': 'application/vnd.github.v3+json' },
+      body: JSON.stringify(body)
+    });
+    console.log('github sync status:', res.status);
+    return res.ok;
+  } catch(e) { console.error('github sync error', e); return false; }
+}
 
 function getTrainerBinId() { return appData.trainerBinId || null; }
 
 async function createTrainerBin() {
   const payload = { trainings: appData.trainings, userName: appData.userName || '', updatedAt: Date.now() };
   try {
-    const res = await fetch(`${NPOINT_API}/bins`, {
+    const res = await fetch(STORAGE_SVC, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ data: payload })
+      body: JSON.stringify(payload)
     });
-    console.log('npoint status:', res.status, res.statusText);
+    console.log('storage status:', res.status);
     const text = await res.text();
-    console.log('npoint response:', text);
+    console.log('storage response:', text);
     if (res.ok) {
       const data = JSON.parse(text);
-      if (data.id) return data.id;
+      const id = data.id || data._id;
+      if (id) return String(id);
     }
-  } catch(e) { console.error('npoint create error', e.message, e); }
+  } catch(e) { console.error('storage create error', e.message); }
   return null;
 }
 
@@ -2835,13 +2882,14 @@ async function syncTrainerBin() {
   if (!binId) return false;
   const payload = { trainings: appData.trainings, userName: appData.userName || '', updatedAt: Date.now() };
   try {
-    const res = await fetch(`${NPOINT_API}/bins/${binId}`, {
-      method: 'POST',
+    const res = await fetch(`${STORAGE_SVC}/${binId}`, {
+      method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ data: payload })
+      body: JSON.stringify(payload)
     });
+    console.log('storage sync status:', res.status);
     return res.ok;
-  } catch(e) { console.error('npoint sync error', e); return false; }
+  } catch(e) { console.error('storage sync error', e); return false; }
 }
 
 function getTrainerURL(binId) {
@@ -2849,16 +2897,17 @@ function getTrainerURL(binId) {
 }
 
 function updateTrainerSettingsUI() {
-  const binId = getTrainerBinId();
+  const hasToken = !!(appData.githubToken);
+  const trainerURL = `${HOSTED_URL}#trainer=github`;
   const linkBox = document.getElementById('trainer-link-box');
   const linkText = document.getElementById('trainer-link-text');
   const btnLabel = document.getElementById('trainer-link-btn-label');
   const copyBtn = document.getElementById('settings-trainer-copy-btn');
   const syncBtn = document.getElementById('settings-trainer-sync-btn');
-  if (binId) {
+  if (hasToken) {
     linkBox.style.display = 'block';
-    linkText.textContent = getTrainerURL(binId);
-    btnLabel.textContent = 'Обновить ссылку';
+    linkText.textContent = trainerURL;
+    btnLabel.textContent = 'Синхронизировать и обновить ссылку';
     copyBtn.style.display = 'flex';
     syncBtn.style.display = 'flex';
   } else {
@@ -2870,31 +2919,28 @@ function updateTrainerSettingsUI() {
 }
 
 document.getElementById('settings-trainer-link-btn').addEventListener('click', async () => {
-  const btn = document.getElementById('settings-trainer-link-btn');
-  btn.querySelector('.settings-button-label').textContent = 'Создание...';
-  let binId = getTrainerBinId();
-  if (!binId) {
-    binId = await createTrainerBin();
-    if (binId) {
-      appData.trainerBinId = binId;
-      await saveData(appData);
-      showToast('Ссылка создана!');
-    } else {
-      showToast('Ошибка создания ссылки');
-      btn.querySelector('.settings-button-label').textContent = 'Создать ссылку для тренера';
-      return;
-    }
-  } else {
-    const ok = await syncTrainerBin();
-    showToast(ok ? 'Данные синхронизированы!' : 'Ошибка синхронизации');
+  const token = appData.githubToken;
+  if (!token) {
+    showToast('Сначала введите GitHub токен');
+    document.getElementById('settings-github-token').focus();
+    return;
   }
-  updateTrainerSettingsUI();
+  const btn = document.getElementById('settings-trainer-link-btn');
+  btn.querySelector('.settings-button-label').textContent = 'Синхронизация...';
+  const ok = await syncTrainerBin();
+  btn.querySelector('.settings-button-label').textContent = 'Синхронизировать и обновить ссылку';
+  if (ok) {
+    appData.trainerBinId = 'github';
+    await saveData(appData);
+    updateTrainerSettingsUI();
+    showToast('Данные синхронизированы!');
+  } else {
+    showToast('Ошибка синхронизации');
+  }
 });
 
 document.getElementById('settings-trainer-copy-btn').addEventListener('click', () => {
-  const binId = getTrainerBinId();
-  if (!binId) return;
-  const url = getTrainerURL(binId);
+  const url = `${HOSTED_URL}#trainer=github`;
   if (navigator.clipboard) {
     navigator.clipboard.writeText(url).then(() => showToast('Ссылка скопирована!'));
   } else { fallbackCopy(url); showToast('Ссылка скопирована!'); }
@@ -2915,7 +2961,7 @@ let trainerViewDate = new Date();
 
 async function loadTrainerView(binId) {
   try {
-    const res = await fetch(`${NPOINT_API}/${binId}`);
+    const res = await fetch(`https://dmytroskichko.github.io/DS-Gym-Diary/trainer-data.json?t=${Date.now()}`);
     const data = await res.json();
     trainerData = data;
     trainerViewDate = new Date();
