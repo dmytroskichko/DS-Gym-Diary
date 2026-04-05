@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- v8 -->
+<!-- v9 -->
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
@@ -2862,43 +2862,6 @@ async function syncTrainerBin() {
     console.log('github sync status:', res.status);
     return res.ok;
   } catch(e) { console.error('github sync error', e); return false; }
-}
-
-function getTrainerBinId() { return appData.trainerBinId || null; }
-
-async function createTrainerBin() {
-  const payload = { trainings: appData.trainings, userName: appData.userName || '', updatedAt: Date.now() };
-  try {
-    const res = await fetch(STORAGE_SVC, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload)
-    });
-    console.log('storage status:', res.status);
-    const text = await res.text();
-    console.log('storage response:', text);
-    if (res.ok) {
-      const data = JSON.parse(text);
-      const id = data.id || data._id;
-      if (id) return String(id);
-    }
-  } catch(e) { console.error('storage create error', e.message); }
-  return null;
-}
-
-async function syncTrainerBin() {
-  const binId = getTrainerBinId();
-  if (!binId) return false;
-  const payload = { trainings: appData.trainings, userName: appData.userName || '', updatedAt: Date.now() };
-  try {
-    const res = await fetch(`${STORAGE_SVC}/${binId}`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload)
-    });
-    console.log('storage sync status:', res.status);
-    return res.ok;
-  } catch(e) { console.error('storage sync error', e); return false; }
 }
 
 function getTrainerURL(binId) {
