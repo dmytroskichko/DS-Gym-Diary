@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Дневник Тренировок</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏋️</text></svg>">
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Raleway:wght@300;400;500;600;700&display=swap');
 
@@ -242,6 +243,38 @@
   }
 
   .training-card:hover { background: var(--surface2); border-color: var(--accent); }
+
+  .training-card.draft {
+    border: 2px dashed var(--danger);
+    background: rgba(255, 71, 87, 0.05);
+  }
+
+  .training-card.draft:hover { background: rgba(255, 71, 87, 0.1); border-color: var(--danger); }
+
+  .draft-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: var(--danger);
+    color: #fff;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 10px;
+    letter-spacing: 0.5px;
+    margin-left: 8px;
+    vertical-align: middle;
+    animation: draftPulse 2s ease infinite;
+  }
+
+  @keyframes draftPulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+  }
+
+  .cal-day.has-draft .training-dot {
+    background: var(--danger);
+  }
 
   .training-card-header {
     display: flex;
@@ -1439,6 +1472,70 @@
         <span class="settings-button-arrow">›</span>
       </button>
     </div>
+
+    <div class="settings-section">
+      <div class="settings-section-title">Ссылка для тренера</div>
+      <div class="settings-input-group" style="margin-bottom:10px;">
+        <label class="settings-label">Тренер видит все тренировки в режиме просмотра (без редактирования). Данные обновляются автоматически.</label>
+        <div id="trainer-link-box" style="display:none; margin-top:10px;">
+          <div id="trainer-link-text" style="font-size:11px; color:var(--accent2); word-break:break-all; margin-bottom:10px; line-height:1.6;"></div>
+        </div>
+      </div>
+      <button class="settings-button" id="settings-trainer-link-btn">
+        <span class="settings-button-icon">🔗</span>
+        <span class="settings-button-label" id="trainer-link-btn-label">Создать ссылку для тренера</span>
+        <span class="settings-button-arrow">›</span>
+      </button>
+      <button class="settings-button" id="settings-trainer-copy-btn" style="display:none;">
+        <span class="settings-button-icon">📋</span>
+        <span class="settings-button-label">Скопировать ссылку</span>
+        <span class="settings-button-arrow">›</span>
+      </button>
+      <button class="settings-button" id="settings-trainer-sync-btn" style="display:none;">
+        <span class="settings-button-icon">↺</span>
+        <span class="settings-button-label">Синхронизировать сейчас</span>
+        <span class="settings-button-arrow">›</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ TRAINER VIEW SCREEN ══════════ -->
+<div id="screen-trainer" class="screen">
+  <div class="front-header">
+    <div class="front-header-top">
+      <div>
+        <h1 class="front-header-title" id="trainer-header-title">ДНЕВНИК</h1>
+        <div class="subtitle" id="trainer-header-subtitle">Просмотр тренировок</div>
+      </div>
+    </div>
+  </div>
+  <div class="cal-nav">
+    <button class="cal-nav-btn" id="trainer-btn-prev">‹</button>
+    <div class="cal-month-label" id="trainer-cal-month-label">—</div>
+    <button class="cal-nav-btn" id="trainer-btn-next">›</button>
+  </div>
+  <div class="cal-weekdays">
+    <span>Пн</span><span>Вт</span><span>Ср</span>
+    <span>Чт</span><span>Пт</span><span>Сб</span><span>Вс</span>
+  </div>
+  <div class="cal-grid" id="trainer-cal-grid"></div>
+  <div class="training-list-section">
+    <div class="section-title" id="trainer-list-title">Тренировки месяца</div>
+    <div id="trainer-list-container"></div>
+  </div>
+</div>
+
+<!-- ══════════ TRAINER TRAINING VIEW MODAL ══════════ -->
+<div class="modal-overlay" id="modal-trainer-training">
+  <div class="modal-sheet" style="max-height:80vh; overflow-y:auto;">
+    <div class="modal-handle"></div>
+    <div class="modal-title" id="trainer-modal-name">—</div>
+    <div class="modal-subtitle" id="trainer-modal-date">—</div>
+    <div id="trainer-modal-body" style="margin-top:12px;"></div>
+    <div style="margin-top:16px;">
+      <button class="modal-btn cancel" id="trainer-modal-close">Закрыть</button>
+    </div>
   </div>
 </div>
 
@@ -1485,6 +1582,19 @@
     <button class="btn-open-link" id="btn-open-link">↗ ОТКРЫТЬ СТРАНИЦУ</button>
     <button class="btn-copy" id="btn-copy-share">СКОПИРОВАТЬ ССЫЛКУ</button>
     <button class="modal-btn cancel" id="modal-share-cancel">Закрыть</button>
+  </div>
+</div>
+
+<!-- ══════════ DRAFT RESUME MODAL ══════════ -->
+<div class="modal-overlay" id="modal-draft">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-title" style="color:var(--danger)">⚠ НЕЗАВЕРШЁННАЯ ТРЕНИРОВКА</div>
+    <div class="modal-subtitle" id="modal-draft-subtitle">Найдена незавершённая тренировка. Что сделать?</div>
+    <div class="modal-actions">
+      <button class="modal-btn edit" id="modal-draft-resume">▶ Продолжить тренировку</button>
+      <button class="modal-btn delete" id="modal-draft-discard">🗑 Удалить</button>
+    </div>
   </div>
 </div>
 
@@ -1682,6 +1792,7 @@ function renderCalendar() {
     if (byDate[dateStr] && byDate[dateStr].length > 0) {
       cell.classList.add('has-training');
       if (byDate[dateStr].length > 1) cell.classList.add('multiple-trainings');
+      if (byDate[dateStr].some(t => t._draft)) cell.classList.add('has-draft');
       const dot = document.createElement('div');
       dot.className = 'training-dot';
       cell.appendChild(dot);
@@ -1717,7 +1828,7 @@ function renderTrainingList() {
   container.innerHTML = '';
   monthTrainings.forEach(t => {
     const card = document.createElement('div');
-    card.className = 'training-card';
+    card.className = t._draft ? 'training-card draft' : 'training-card';
     card.dataset.id = t.id;
 
     const exTags = (t.exercises || []).slice(0, 4).map(e =>
@@ -1725,15 +1836,16 @@ function renderTrainingList() {
     ).join('') + ((t.exercises||[]).length > 4 ? `<span class="exercise-tag">+${t.exercises.length-4}</span>` : '');
 
     const bodyweightTag = t.bodyweight ? `<span class="exercise-tag">⚖️ ${t.bodyweight} кг</span>` : '';
+    const draftBadge = t._draft ? `<span class="draft-badge">⚡ не завершена</span>` : '';
 
     card.innerHTML = `
       <div class="training-card-header">
-        <div class="training-card-name">${t.name || 'Без названия'}</div>
+        <div class="training-card-name">${t.name || 'Без названия'}${draftBadge}</div>
         <div class="training-card-date">${formatDateFull(t.date)}</div>
       </div>
       <div class="training-card-exercises">${exTags || '<span style="font-size:11px;color:var(--text-dim)">Упражнений нет</span>'} ${bodyweightTag}</div>`;
 
-    card.addEventListener('click', () => openTrainingModal(t.id));
+    card.addEventListener('click', () => t._draft ? openDraftModal(t.id) : openTrainingModal(t.id));
     container.appendChild(card);
   });
 }
@@ -1945,9 +2057,10 @@ function checkHashOnLoad() {
       const json = decodeURIComponent(escape(atob(encoded)));
       const t = JSON.parse(json);
       renderShareScreen(t);
-    } catch(e) {
-      console.warn('Invalid share link', e);
-    }
+    } catch(e) { console.warn('Invalid share link', e); }
+  } else if (hash.startsWith('#trainer=')) {
+    const binId = hash.slice(9);
+    if (binId) loadTrainerView(binId);
   }
 }
 
@@ -2011,7 +2124,10 @@ sessionNameInput.addEventListener('input', () => {
   });
 });
 
-sessionNameInput.addEventListener('blur', () => setTimeout(() => sessionNameAC.classList.remove('show'), 200));
+sessionNameInput.addEventListener('blur', () => {
+  setTimeout(() => sessionNameAC.classList.remove('show'), 200);
+  autoSaveSession();
+});
 
 function renderACList(el, items, onSelect) {
   el.innerHTML = '';
@@ -2046,6 +2162,9 @@ document.getElementById('btn-add-note').addEventListener('click', () => {
   na.classList.toggle('show');
   if (na.classList.contains('show')) document.getElementById('note-textarea').focus();
 });
+
+document.getElementById('bodyweight-input').addEventListener('blur', autoSaveSession);
+document.getElementById('note-textarea').addEventListener('blur', autoSaveSession);
 
 // ADD EXERCISE
 let exerciseCounter = 0;
@@ -2136,7 +2255,10 @@ function addExerciseBlock(existingEx) {
       updatePRBadge(name);
     });
   });
-  nameInput.addEventListener('blur', () => setTimeout(() => acList.classList.remove('show'), 200));
+  nameInput.addEventListener('blur', () => {
+    setTimeout(() => acList.classList.remove('show'), 200);
+    autoSaveSession();
+  });
 
   // Remove exercise
   removeBtn.addEventListener('click', () => {
@@ -2161,6 +2283,52 @@ function addExerciseBlock(existingEx) {
   }
 }
 
+// ═══════════════════════════════════════════════
+// AUTO-SAVE SESSION
+// ═══════════════════════════════════════════════
+let autoSaveTimer = null;
+
+function collectSessionData() {
+  if (!sessionState) return null;
+  const name = document.getElementById('session-name-input').value.trim();
+  const bodyweight = document.getElementById('bodyweight-input').value.trim();
+  const note = document.getElementById('note-textarea').value.trim();
+  const exercises = [];
+  document.querySelectorAll('.exercise-block').forEach(block => {
+    const exName = block.querySelector('.exercise-name-input').value.trim();
+    const sets = [];
+    block.querySelectorAll('.set-row').forEach((row, i) => {
+      const w = row.querySelector('.weight-input').value.trim();
+      const r = row.querySelector('.reps-input').value.trim();
+      if (w || r) sets.push({ num: i+1, weight: w, reps: r });
+    });
+    if (exName || sets.length) exercises.push({ name: exName, sets });
+  });
+  return {
+    id: sessionState.trainingId,
+    date: sessionState.date,
+    name: name || 'Без названия',
+    bodyweight,
+    exercises,
+    note,
+    createdAt: Date.now(),
+    _draft: true,
+  };
+}
+
+function autoSaveSession() {
+  clearTimeout(autoSaveTimer);
+  autoSaveTimer = setTimeout(async () => {
+    const draft = collectSessionData();
+    if (!draft) return;
+    // Save draft into appData trainings (upsert)
+    const idx = appData.trainings.findIndex(t => t.id === draft.id);
+    if (idx !== -1) appData.trainings[idx] = draft;
+    else appData.trainings.push(draft);
+    await saveData(appData);
+  }, 600);
+}
+
 function addSetRow(container, weight, reps) {
   const setNum = container.querySelectorAll('.set-row').length + 1;
   const row = document.createElement('div');
@@ -2177,19 +2345,38 @@ function addSetRow(container, weight, reps) {
   function checkWeightFilled() {
     const w = weightInput.value.trim();
     if (!w) return;
-    const exerciseBlock = container.closest('.exercise-block');
-    const exerciseName = exerciseBlock?.querySelector('.exercise-name-input')?.value?.trim();
-    const r = repsInput.value.trim();
-    // PR check (only if reps also filled)
-    if (exerciseName && r) {
-      if (isPR(exerciseName, w, r)) showToast('🏆 Новый рекорд!');
-    }
-    // Start rest timer and scroll to bottom buttons
-    startRestTimer(appData.restTimer || 90);
+    // Wait briefly to see if focus moved to reps on the same row
+    setTimeout(() => {
+      if (document.activeElement === repsInput) return;
+      const exerciseBlock = container.closest('.exercise-block');
+      const exerciseName = exerciseBlock?.querySelector('.exercise-name-input')?.value?.trim();
+      const r = repsInput.value.trim();
+      if (exerciseName && r) {
+        if (isPR(exerciseName, w, r)) showToast('🏆 Новый рекорд!');
+      }
+      startRestTimer(appData.restTimer || 90);
+    }, 150);
   }
 
-  weightInput.addEventListener('change', checkWeightFilled);
   weightInput.addEventListener('blur', checkWeightFilled);
+  weightInput.addEventListener('blur', autoSaveSession);
+  repsInput.addEventListener('blur', autoSaveSession);
+
+  // Also trigger when reps is filled in and user moves away
+  repsInput.addEventListener('blur', () => {
+    const w = weightInput.value.trim();
+    const r = repsInput.value.trim();
+    if (!w || !r) return;
+    const exerciseBlock = container.closest('.exercise-block');
+    const exerciseName = exerciseBlock?.querySelector('.exercise-name-input')?.value?.trim();
+    if (exerciseName && isPR(exerciseName, w, r)) showToast('🏆 Новый рекорд!');
+    startRestTimer(appData.restTimer || 90);
+    // Scroll to bottom buttons now that the set is complete
+    setTimeout(() => {
+      const sessionBottom = document.querySelector('.session-bottom');
+      if (sessionBottom) sessionBottom.scrollIntoView({ behavior: 'smooth', block: 'end' });
+    }, 80);
+  });
 
   container.appendChild(row);
   return row;
@@ -2232,7 +2419,6 @@ document.getElementById('btn-finish-training').addEventListener('click', async (
     note,
     createdAt: Date.now(),
   };
-
   if (sessionState.isEdit) {
     const idx = appData.trainings.findIndex(t => t.id === sessionState.trainingId);
     if (idx !== -1) appData.trainings[idx] = training;
@@ -2246,6 +2432,7 @@ document.getElementById('btn-finish-training').addEventListener('click', async (
   currentViewDate = new Date(td.getFullYear(), td.getMonth(), 1);
 
   await saveData(appData);
+  if (getTrainerBinId()) syncTrainerBin();
   renderCalendar();
   showScreen('front');
   showToast(sessionState.isEdit ? 'Тренировка обновлена!' : 'Тренировка сохранена!');
@@ -2283,14 +2470,6 @@ function startRestTimer(seconds = 90) {
   
   timerEl.classList.add('show');
   updateTimerDisplay();
-
-  // Scroll so the session bottom buttons are visible
-  setTimeout(() => {
-    const sessionBottom = document.querySelector('.session-bottom');
-    if (sessionBottom) {
-      sessionBottom.scrollIntoView({ behavior: 'smooth', block: 'end' });
-    }
-  }, 80);
   
   restTimerInterval = setInterval(() => {
     restTimerRemaining--;
@@ -2492,9 +2671,9 @@ function drawProgressChart(canvasId, data, metric) {
 // SETTINGS SCREEN
 // ═══════════════════════════════════════════════
 document.getElementById('btn-settings').addEventListener('click', () => {
-  // Load current user name and rest timer
   document.getElementById('settings-user-name').value = appData.userName || '';
   document.getElementById('settings-rest-time').value = appData.restTimer || 90;
+  updateTrainerSettingsUI();
   showScreen('settings');
 });
 
@@ -2601,15 +2780,288 @@ document.getElementById('settings-import-btn').addEventListener('click', () => {
 });
 
 // ═══════════════════════════════════════════════
-// INIT
+// DRAFT MODAL
 // ═══════════════════════════════════════════════
+let activeDraftId = null;
+
+function openDraftModal(id) {
+  const t = appData.trainings.find(x => x.id === id);
+  if (!t) return;
+  activeDraftId = id;
+  document.getElementById('modal-draft-subtitle').textContent =
+    `«${t.name || 'Без названия'}» — ${formatDateFull(t.date)}`;
+  document.getElementById('modal-draft').classList.add('show');
+}
+
+document.getElementById('modal-draft-resume').addEventListener('click', () => {
+  document.getElementById('modal-draft').classList.remove('show');
+  const t = appData.trainings.find(x => x.id === activeDraftId);
+  if (t) openSession(true, t);
+});
+
+document.getElementById('modal-draft-discard').addEventListener('click', async () => {
+  appData.trainings = appData.trainings.filter(x => x.id !== activeDraftId);
+  await saveData(appData);
+  document.getElementById('modal-draft').classList.remove('show');
+  renderCalendar();
+  showToast('Тренировка удалена');
+});
+// ═══════════════════════════════════════════════
+const JSONBIN_API = 'https://api.jsonbin.io/v3';
+const JSONBIN_KEY = '$2a$10$placeholder'; // will be replaced per-user bin
+const TRAINER_BIN_KEY = 'gym-diary-trainer-bin';
+
+function getTrainerBinId() { return appData.trainerBinId || null; }
+
+async function createTrainerBin() {
+  const payload = { trainings: appData.trainings, userName: appData.userName || '', updatedAt: Date.now() };
+  try {
+    const res = await fetch(`${JSONBIN_API}/b`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'X-Bin-Private': 'false', 'X-Bin-Name': 'gym-diary-trainer' },
+      body: JSON.stringify(payload)
+    });
+    const data = await res.json();
+    if (data.metadata && data.metadata.id) {
+      return data.metadata.id;
+    }
+  } catch(e) { console.error('JSONBin create error', e); }
+  return null;
+}
+
+async function syncTrainerBin() {
+  const binId = getTrainerBinId();
+  if (!binId) return false;
+  const payload = { trainings: appData.trainings, userName: appData.userName || '', updatedAt: Date.now() };
+  try {
+    const res = await fetch(`${JSONBIN_API}/b/${binId}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+    return res.ok;
+  } catch(e) { console.error('JSONBin sync error', e); return false; }
+}
+
+function getTrainerURL(binId) {
+  return `${HOSTED_URL}#trainer=${binId}`;
+}
+
+function updateTrainerSettingsUI() {
+  const binId = getTrainerBinId();
+  const linkBox = document.getElementById('trainer-link-box');
+  const linkText = document.getElementById('trainer-link-text');
+  const btnLabel = document.getElementById('trainer-link-btn-label');
+  const copyBtn = document.getElementById('settings-trainer-copy-btn');
+  const syncBtn = document.getElementById('settings-trainer-sync-btn');
+  if (binId) {
+    linkBox.style.display = 'block';
+    linkText.textContent = getTrainerURL(binId);
+    btnLabel.textContent = 'Обновить ссылку';
+    copyBtn.style.display = 'flex';
+    syncBtn.style.display = 'flex';
+  } else {
+    linkBox.style.display = 'none';
+    btnLabel.textContent = 'Создать ссылку для тренера';
+    copyBtn.style.display = 'none';
+    syncBtn.style.display = 'none';
+  }
+}
+
+document.getElementById('settings-trainer-link-btn').addEventListener('click', async () => {
+  const btn = document.getElementById('settings-trainer-link-btn');
+  btn.querySelector('.settings-button-label').textContent = 'Создание...';
+  let binId = getTrainerBinId();
+  if (!binId) {
+    binId = await createTrainerBin();
+    if (binId) {
+      appData.trainerBinId = binId;
+      await saveData(appData);
+      showToast('Ссылка создана!');
+    } else {
+      showToast('Ошибка создания ссылки');
+      btn.querySelector('.settings-button-label').textContent = 'Создать ссылку для тренера';
+      return;
+    }
+  } else {
+    const ok = await syncTrainerBin();
+    showToast(ok ? 'Данные синхронизированы!' : 'Ошибка синхронизации');
+  }
+  updateTrainerSettingsUI();
+});
+
+document.getElementById('settings-trainer-copy-btn').addEventListener('click', () => {
+  const binId = getTrainerBinId();
+  if (!binId) return;
+  const url = getTrainerURL(binId);
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(url).then(() => showToast('Ссылка скопирована!'));
+  } else { fallbackCopy(url); showToast('Ссылка скопирована!'); }
+});
+
+document.getElementById('settings-trainer-sync-btn').addEventListener('click', async () => {
+  document.getElementById('settings-trainer-sync-btn').querySelector('.settings-button-label').textContent = 'Синхронизация...';
+  const ok = await syncTrainerBin();
+  document.getElementById('settings-trainer-sync-btn').querySelector('.settings-button-label').textContent = 'Синхронизировать сейчас';
+  showToast(ok ? 'Данные синхронизированы!' : 'Ошибка синхронизации');
+});
+
+// ═══════════════════════════════════════════════
+// TRAINER VIEW SCREEN
+// ═══════════════════════════════════════════════
+let trainerData = null;
+let trainerViewDate = new Date();
+
+async function loadTrainerView(binId) {
+  try {
+    const res = await fetch(`${JSONBIN_API}/b/${binId}/latest`);
+    const data = await res.json();
+    trainerData = data.record;
+    trainerViewDate = new Date();
+    const name = trainerData.userName ? `ДНЕВНИК — ${trainerData.userName.toUpperCase()}` : 'ДНЕВНИК';
+    document.getElementById('trainer-header-title').textContent = name;
+    renderTrainerCalendar();
+    showScreen('trainer');
+  } catch(e) {
+    document.body.innerHTML = `<div style="color:#f0f0f0;font-family:sans-serif;padding:40px;text-align:center;background:#0d0d0f;min-height:100vh;">
+      <div style="font-size:48px;margin-bottom:20px;">🏋️</div>
+      <div style="font-size:24px;margin-bottom:12px;">Дневник тренировок</div>
+      <div style="color:#8a8d9a;">Не удалось загрузить данные.<br>Попросите тренирующегося обновить ссылку.</div>
+    </div>`;
+  }
+}
+
+function renderTrainerCalendar() {
+  const y = trainerViewDate.getFullYear();
+  const m = trainerViewDate.getMonth();
+  document.getElementById('trainer-cal-month-label').textContent = `${MONTHS_RU[m]} ${y}`;
+
+  const firstDay = new Date(y, m, 1);
+  const lastDay  = new Date(y, m+1, 0);
+  const startOffset = (firstDay.getDay() + 6) % 7;
+
+  const grid = document.getElementById('trainer-cal-grid');
+  grid.innerHTML = '';
+  const todayS = todayStr();
+
+  const byDate = {};
+  (trainerData.trainings || []).forEach(t => {
+    if (t.date.startsWith(`${y}-${String(m+1).padStart(2,'0')}`)) {
+      if (!byDate[t.date]) byDate[t.date] = [];
+      byDate[t.date].push(t);
+    }
+  });
+
+  for (let i = 0; i < startOffset; i++) {
+    grid.appendChild(Object.assign(document.createElement('div'), { className: 'cal-day' }));
+  }
+  for (let d = 1; d <= lastDay.getDate(); d++) {
+    const dateStr = `${y}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    const cell = document.createElement('div');
+    cell.className = 'cal-day';
+    if (dateStr === todayS) cell.classList.add('today');
+    const dayNum = document.createElement('div');
+    dayNum.className = 'day-num';
+    dayNum.textContent = d;
+    cell.appendChild(dayNum);
+    if (byDate[dateStr] && byDate[dateStr].length > 0) {
+      cell.classList.add('has-training');
+      if (byDate[dateStr].length > 1) cell.classList.add('multiple-trainings');
+      const dot = document.createElement('div');
+      dot.className = 'training-dot';
+      cell.appendChild(dot);
+    }
+    grid.appendChild(cell);
+  }
+
+  // Training list
+  const monthTrainings = (trainerData.trainings || [])
+    .filter(t => t.date.startsWith(`${y}-${String(m+1).padStart(2,'0')}`))
+    .sort((a,b) => b.date.localeCompare(a.date));
+
+  const container = document.getElementById('trainer-list-container');
+  document.getElementById('trainer-list-title').textContent = `Тренировки — ${MONTHS_RU[m]} ${y}`;
+
+  if (monthTrainings.length === 0) {
+    container.innerHTML = `<div class="empty-state"><div class="big-icon">🏋️</div><p>В этом месяце тренировок нет.</p></div>`;
+    return;
+  }
+
+  container.innerHTML = '';
+  monthTrainings.forEach(t => {
+    const card = document.createElement('div');
+    card.className = 'training-card';
+    const exTags = (t.exercises || []).slice(0,4).map(e => `<span class="exercise-tag">${e.name || '—'}</span>`).join('') +
+      ((t.exercises||[]).length > 4 ? `<span class="exercise-tag">+${t.exercises.length-4}</span>` : '');
+    const bwTag = t.bodyweight ? `<span class="exercise-tag">⚖️ ${t.bodyweight} кг</span>` : '';
+    card.innerHTML = `
+      <div class="training-card-header">
+        <div class="training-card-name">${t.name || 'Без названия'}</div>
+        <div class="training-card-date">${formatDateFull(t.date)}</div>
+      </div>
+      <div class="training-card-exercises">${exTags || '<span style="font-size:11px;color:var(--text-dim)">Упражнений нет</span>'} ${bwTag}</div>`;
+    card.addEventListener('click', () => openTrainerTrainingModal(t));
+    container.appendChild(card);
+  });
+}
+
+function openTrainerTrainingModal(t) {
+  document.getElementById('trainer-modal-name').textContent = t.name || 'Без названия';
+  let dateText = formatDateFull(t.date);
+  if (t.bodyweight) dateText += ` • ⚖️ ${t.bodyweight} кг`;
+  document.getElementById('trainer-modal-date').textContent = dateText;
+
+  const body = document.getElementById('trainer-modal-body');
+  body.innerHTML = '';
+  (t.exercises || []).forEach((ex, i) => {
+    const validSets = (ex.sets || []).filter(s => s.weight || s.reps);
+    const block = document.createElement('div');
+    block.className = 'share-ex-block';
+    let setsHTML = validSets.length
+      ? `<div class="share-sets-header"><span>Сет</span><span>Вес</span><span>Повторения</span></div>` +
+        validSets.map(s => `<div class="share-set-row">
+          <div class="share-set-num">${s.num}</div>
+          <div class="share-set-weight">${s.weight ? s.weight+' кг' : '—'}</div>
+          <div class="share-set-reps">${s.reps ? s.reps+' повт.' : '—'}</div>
+        </div>`).join('')
+      : `<div style="padding:12px 16px;font-size:13px;color:var(--text-dim)">Сеты не записаны</div>`;
+    block.innerHTML = `<div class="share-ex-title"><span class="share-ex-num">#${i+1}</span>${ex.name || 'Упражнение'}</div>${setsHTML}`;
+    body.appendChild(block);
+  });
+  if (t.note) {
+    body.innerHTML += `<div class="share-note-block" style="margin-top:8px;"><div class="share-note-label">📝 Заметка</div><div class="share-note-text">${t.note}</div></div>`;
+  }
+
+  document.getElementById('modal-trainer-training').classList.add('show');
+}
+
+document.getElementById('trainer-modal-close').addEventListener('click', () => {
+  document.getElementById('modal-trainer-training').classList.remove('show');
+});
+document.getElementById('modal-trainer-training').addEventListener('click', function(e) {
+  if (e.target === this) this.classList.remove('show');
+});
+
+document.getElementById('trainer-btn-prev').addEventListener('click', () => {
+  trainerViewDate.setMonth(trainerViewDate.getMonth() - 1);
+  renderTrainerCalendar();
+});
+document.getElementById('trainer-btn-next').addEventListener('click', () => {
+  trainerViewDate.setMonth(trainerViewDate.getMonth() + 1);
+  renderTrainerCalendar();
+});
 async function init() {
   appData = await loadData();
   currentViewDate = new Date();
   checkHashOnLoad();
-  // If no hash route matched, render the front screen normally
-  if (!window.location.hash.startsWith('#share=')) {
+  if (!window.location.hash.startsWith('#share=') && !window.location.hash.startsWith('#trainer=')) {
     renderCalendar();
+    // Check for unfinished draft sessions
+    const drafts = appData.trainings.filter(t => t._draft);
+    if (drafts.length > 0) {
+      // Show modal for the most recent draft
+      setTimeout(() => openDraftModal(drafts[drafts.length - 1].id), 400);
+    }
   }
 }
 
