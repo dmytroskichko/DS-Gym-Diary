@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<!-- v5 -->
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
@@ -2808,27 +2807,26 @@ document.getElementById('modal-draft-discard').addEventListener('click', async (
   showToast('Тренировка удалена');
 });
 // ═══════════════════════════════════════════════
-const STORAGE_SVC = 'https://jsonstorage.net/api/items';
+const NPOINT_API = 'https://api.npoint.io';
 
 function getTrainerBinId() { return appData.trainerBinId || null; }
 
 async function createTrainerBin() {
   const payload = { trainings: appData.trainings, userName: appData.userName || '', updatedAt: Date.now() };
   try {
-    const res = await fetch(STORAGE_SVC, {
+    const res = await fetch(`${NPOINT_API}/bins`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload)
+      body: JSON.stringify({ data: payload })
     });
-    console.log('storage status:', res.status);
+    console.log('npoint status:', res.status, res.statusText);
     const text = await res.text();
-    console.log('storage response:', text);
+    console.log('npoint response:', text);
     if (res.ok) {
       const data = JSON.parse(text);
-      const id = data.id || data._id;
-      if (id) return String(id);
+      if (data.id) return data.id;
     }
-  } catch(e) { console.error('storage create error', e.message); }
+  } catch(e) { console.error('npoint create error', e.message, e); }
   return null;
 }
 
@@ -2837,14 +2835,13 @@ async function syncTrainerBin() {
   if (!binId) return false;
   const payload = { trainings: appData.trainings, userName: appData.userName || '', updatedAt: Date.now() };
   try {
-    const res = await fetch(`${STORAGE_SVC}/${binId}`, {
-      method: 'PUT',
+    const res = await fetch(`${NPOINT_API}/bins/${binId}`, {
+      method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload)
+      body: JSON.stringify({ data: payload })
     });
-    console.log('storage sync status:', res.status);
     return res.ok;
-  } catch(e) { console.error('storage sync error', e); return false; }
+  } catch(e) { console.error('npoint sync error', e); return false; }
 }
 
 function getTrainerURL(binId) {
@@ -2918,7 +2915,7 @@ let trainerViewDate = new Date();
 
 async function loadTrainerView(binId) {
   try {
-    const res = await fetch(`${STORAGE_SVC}/${binId}`);
+    const res = await fetch(`${NPOINT_API}/${binId}`);
     const data = await res.json();
     trainerData = data;
     trainerViewDate = new Date();
