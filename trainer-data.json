@@ -2304,10 +2304,14 @@
       "date": "2026-04-06",
       "name": "Бег",
       "bodyweight": "",
-      "exercises": [],
-      "note": "",
-      "createdAt": 1775480134646,
-      "_draft": true
+      "exercises": [
+        {
+          "name": "Бег 10k @ 6.08",
+          "sets": []
+        }
+      ],
+      "note": "10k @ 6.08",
+      "createdAt": 1775480185359
     },
     {
       "id": "mnn70qw4spr4c",
@@ -2320,5 +2324,5 @@
     }
   ],
   "userName": "Дима",
-  "updatedAt": 1775480155705
+  "updatedAt": 1775480185360
 }
