@@ -1450,15 +1450,6 @@
       "createdAt": 1774089753867
     },
     {
-      "id": "mn077nlm781yo",
-      "date": "2026-03-21",
-      "name": "Без названия",
-      "bodyweight": "",
-      "exercises": [],
-      "note": "",
-      "createdAt": 1774089719431
-    },
-    {
       "id": "mn70vdvk9l2s4",
       "date": "2026-03-26",
       "name": "Ноги",
@@ -2307,8 +2298,27 @@
       ],
       "note": "",
       "createdAt": 1775377769855
+    },
+    {
+      "id": "mnn70qw4spr4c",
+      "date": "2026-04-06",
+      "name": "Бег",
+      "bodyweight": "",
+      "exercises": [],
+      "note": "",
+      "createdAt": 1775480134646,
+      "_draft": true
+    },
+    {
+      "id": "mnn70qw4spr4c",
+      "date": "2026-04-06",
+      "name": "Бег",
+      "bodyweight": "",
+      "exercises": [],
+      "note": "10k @ 6.08",
+      "createdAt": 1775480155703
     }
   ],
   "userName": "Дима",
-  "updatedAt": 1775418110597
+  "updatedAt": 1775480155705
 }
