@@ -2300,15 +2300,121 @@
       "createdAt": 1775377769855
     },
     {
-      "id": "mnn7kls5nsrg0",
-      "date": "2026-04-06",
-      "name": "Без названия",
-      "bodyweight": "",
-      "exercises": [],
+      "id": "mo414gzujomtq",
+      "date": "2026-04-18",
+      "name": "Full body",
+      "bodyweight": "81.65",
+      "exercises": [
+        {
+          "name": "Присед",
+          "sets": [
+            {
+              "num": 1,
+              "weight": "20",
+              "reps": ""
+            }
+          ]
+        },
+        {
+          "name": "Тяга штанги в наклоне",
+          "sets": [
+            {
+              "num": 1,
+              "weight": "20",
+              "reps": ""
+            }
+          ]
+        },
+        {
+          "name": "Жим штанги на горизонтальной скамье",
+          "sets": [
+            {
+              "num": 1,
+              "weight": "20",
+              "reps": ""
+            }
+          ]
+        },
+        {
+          "name": "Подъем  w штанги на бицепс стоя",
+          "sets": [
+            {
+              "num": 1,
+              "weight": "20",
+              "reps": ""
+            }
+          ]
+        },
+        {
+          "name": "Отжимания от брусьев на трицепс",
+          "sets": []
+        }
+      ],
       "note": "",
-      "createdAt": 1776498133577
+      "createdAt": 1776498305255,
+      "_draft": true
+    },
+    {
+      "id": "mo414gzujomtq",
+      "date": "2026-04-18",
+      "name": "Full body",
+      "bodyweight": "81.65",
+      "exercises": [
+        {
+          "name": "Присед",
+          "sets": [
+            {
+              "num": 1,
+              "weight": "20",
+              "reps": ""
+            }
+          ]
+        },
+        {
+          "name": "Тяга штанги в наклоне",
+          "sets": [
+            {
+              "num": 1,
+              "weight": "20",
+              "reps": ""
+            }
+          ]
+        },
+        {
+          "name": "Жим штанги на горизонтальной скамье",
+          "sets": [
+            {
+              "num": 1,
+              "weight": "20",
+              "reps": ""
+            }
+          ]
+        },
+        {
+          "name": "Подъем  w штанги на бицепс стоя",
+          "sets": [
+            {
+              "num": 1,
+              "weight": "20",
+              "reps": ""
+            }
+          ]
+        },
+        {
+          "name": "Отжимания от брусьев на трицепс",
+          "sets": [
+            {
+              "num": 1,
+              "weight": "82",
+              "reps": ""
+            }
+          ]
+        }
+      ],
+      "note": "",
+      "createdAt": 1776498308006
     }
   ],
   "userName": "Дима",
-  "updatedAt": 1776498133595
+  "updatedAt": 1776498308007
 }
