@@ -2300,29 +2300,15 @@
       "createdAt": 1775377769855
     },
     {
-      "id": "mnn70qw4spr4c",
+      "id": "mnn7kls5nsrg0",
       "date": "2026-04-06",
-      "name": "Бег",
-      "bodyweight": "",
-      "exercises": [
-        {
-          "name": "Бег 10k @ 6.08",
-          "sets": []
-        }
-      ],
-      "note": "10k @ 6.08",
-      "createdAt": 1775480185359
-    },
-    {
-      "id": "mnn70qw4spr4c",
-      "date": "2026-04-06",
-      "name": "Бег",
+      "name": "Без названия",
       "bodyweight": "",
       "exercises": [],
-      "note": "10k @ 6.08",
-      "createdAt": 1775480155703
+      "note": "",
+      "createdAt": 1776498133577
     }
   ],
   "userName": "Дима",
-  "updatedAt": 1775480185360
+  "updatedAt": 1776498133595
 }
