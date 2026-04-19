@@ -2525,7 +2525,7 @@
       "createdAt": 1776498308006
     },
     {
-      "id": "mo68jw5ii7aqx",
+      "id": "mo68ks89pxsfi",
       "date": "2026-04-19",
       "name": "Бег",
       "bodyweight": "",
@@ -2535,18 +2535,18 @@
           "sets": [
             {
               "num": 1,
-              "weight": "11",
-              "reps": "6.15"
+              "weight": "6.15",
+              "reps": "11"
             }
           ]
         }
       ],
-      "note": "",
-      "createdAt": 1776631576345,
+      "note": "Тест",
+      "createdAt": 1776631626942,
       "_draft": true
     },
     {
-      "id": "mo68jw5ii7aqx",
+      "id": "mo68ks89pxsfi",
       "date": "2026-04-19",
       "name": "Бег",
       "bodyweight": "",
@@ -2556,16 +2556,16 @@
           "sets": [
             {
               "num": 1,
-              "weight": "11",
-              "reps": "6.15"
+              "weight": "6.15",
+              "reps": "11"
             }
           ]
         }
       ],
-      "note": "",
-      "createdAt": 1776631578546
+      "note": "Тест",
+      "createdAt": 1776631628911
     }
   ],
   "userName": "Дима",
-  "updatedAt": 1776631578547
+  "updatedAt": 1776631628911
 }
