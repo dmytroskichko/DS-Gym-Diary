@@ -2525,7 +2525,7 @@
       "createdAt": 1776498308006
     },
     {
-      "id": "mo68in5lhl5i3",
+      "id": "mo68jw5ii7aqx",
       "date": "2026-04-19",
       "name": "Бег",
       "bodyweight": "",
@@ -2542,10 +2542,11 @@
         }
       ],
       "note": "",
-      "createdAt": 1776631536437
+      "createdAt": 1776631576345,
+      "_draft": true
     },
     {
-      "id": "mo68in5lhl5i3",
+      "id": "mo68jw5ii7aqx",
       "date": "2026-04-19",
       "name": "Бег",
       "bodyweight": "",
@@ -2562,9 +2563,9 @@
         }
       ],
       "note": "",
-      "createdAt": 1776631528900
+      "createdAt": 1776631578546
     }
   ],
   "userName": "Дима",
-  "updatedAt": 1776631536438
+  "updatedAt": 1776631578547
 }
