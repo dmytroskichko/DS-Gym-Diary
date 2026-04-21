@@ -2563,8 +2563,189 @@
       ],
       "note": "",
       "createdAt": 1776631682071
+    },
+    {
+      "id": "mo86b7o9jpmjt",
+      "date": "2026-04-21",
+      "name": "Full body 2",
+      "bodyweight": "",
+      "exercises": [
+        {
+          "name": "Тяга становая",
+          "sets": [
+            {
+              "num": 1,
+              "weight": "20",
+              "reps": "12"
+            },
+            {
+              "num": 2,
+              "weight": "60",
+              "reps": "10"
+            },
+            {
+              "num": 3,
+              "weight": "90",
+              "reps": "10"
+            },
+            {
+              "num": 4,
+              "weight": "120",
+              "reps": "5"
+            },
+            {
+              "num": 5,
+              "weight": "120",
+              "reps": "4"
+            },
+            {
+              "num": 6,
+              "weight": "120",
+              "reps": "10"
+            },
+            {
+              "num": 7,
+              "weight": "120",
+              "reps": "10"
+            },
+            {
+              "num": 8,
+              "weight": "150",
+              "reps": "1"
+            }
+          ]
+        },
+        {
+          "name": "Жим штанги на наклонной скамье головой вверх",
+          "sets": [
+            {
+              "num": 1,
+              "weight": "20",
+              "reps": "12"
+            },
+            {
+              "num": 2,
+              "weight": "40",
+              "reps": "10"
+            },
+            {
+              "num": 3,
+              "weight": "50",
+              "reps": "10"
+            },
+            {
+              "num": 4,
+              "weight": "55",
+              "reps": "10"
+            },
+            {
+              "num": 5,
+              "weight": "55",
+              "reps": "10"
+            },
+            {
+              "num": 6,
+              "weight": "55",
+              "reps": ""
+            }
+          ]
+        }
+      ],
+      "note": "",
+      "createdAt": 1776750966629,
+      "_draft": true
+    },
+    {
+      "id": "mo86b7o9jpmjt",
+      "date": "2026-04-21",
+      "name": "Full body 2",
+      "bodyweight": "",
+      "exercises": [
+        {
+          "name": "Тяга становая",
+          "sets": [
+            {
+              "num": 1,
+              "weight": "20",
+              "reps": "12"
+            },
+            {
+              "num": 2,
+              "weight": "60",
+              "reps": "10"
+            },
+            {
+              "num": 3,
+              "weight": "90",
+              "reps": "10"
+            },
+            {
+              "num": 4,
+              "weight": "120",
+              "reps": "5"
+            },
+            {
+              "num": 5,
+              "weight": "120",
+              "reps": "4"
+            },
+            {
+              "num": 6,
+              "weight": "120",
+              "reps": "10"
+            },
+            {
+              "num": 7,
+              "weight": "120",
+              "reps": "10"
+            },
+            {
+              "num": 8,
+              "weight": "150",
+              "reps": "1"
+            }
+          ]
+        },
+        {
+          "name": "Жим штанги на наклонной скамье головой вверх",
+          "sets": [
+            {
+              "num": 1,
+              "weight": "20",
+              "reps": "12"
+            },
+            {
+              "num": 2,
+              "weight": "40",
+              "reps": "10"
+            },
+            {
+              "num": 3,
+              "weight": "50",
+              "reps": "10"
+            },
+            {
+              "num": 4,
+              "weight": "55",
+              "reps": "10"
+            },
+            {
+              "num": 5,
+              "weight": "55",
+              "reps": "10"
+            },
+            {
+              "num": 6,
+              "weight": "55",
+              "reps": "10"
+            }
+          ]
+        }
+      ],
+      "note": "",
+      "createdAt": 1776750968024
     }
   ],
   "userName": "Дима",
-  "updatedAt": 1776748711630
+  "updatedAt": 1776750968028
 }
