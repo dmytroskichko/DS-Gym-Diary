@@ -2743,8 +2743,69 @@
       ],
       "note": "",
       "createdAt": 1776750968024
+    },
+    {
+      "id": "mo92gcq2cyvki",
+      "date": "2026-04-21",
+      "name": "Препараты",
+      "bodyweight": "",
+      "exercises": [
+        {
+          "name": "Сустанон",
+          "sets": [
+            {
+              "num": 1,
+              "weight": "250",
+              "reps": "1"
+            }
+          ]
+        },
+        {
+          "name": "Примоболан",
+          "sets": [
+            {
+              "num": 1,
+              "weight": "300",
+              "reps": "1"
+            }
+          ]
+        }
+      ],
+      "note": "",
+      "createdAt": 1776802774400,
+      "_draft": true
+    },
+    {
+      "id": "mo92gcq2cyvki",
+      "date": "2026-04-21",
+      "name": "Препараты",
+      "bodyweight": "",
+      "exercises": [
+        {
+          "name": "Сустанон",
+          "sets": [
+            {
+              "num": 1,
+              "weight": "250",
+              "reps": "1"
+            }
+          ]
+        },
+        {
+          "name": "Примоболан",
+          "sets": [
+            {
+              "num": 1,
+              "weight": "300",
+              "reps": "1"
+            }
+          ]
+        }
+      ],
+      "note": "",
+      "createdAt": 1776802777992
     }
   ],
   "userName": "Дима",
-  "updatedAt": 1776768969662
+  "updatedAt": 1776802778000
 }
