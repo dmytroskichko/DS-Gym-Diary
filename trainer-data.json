@@ -2646,14 +2646,13 @@
             {
               "num": 6,
               "weight": "55",
-              "reps": ""
+              "reps": "10"
             }
           ]
         }
       ],
       "note": "",
-      "createdAt": 1776750966629,
-      "_draft": true
+      "createdAt": 1776750977836
     },
     {
       "id": "mo86b7o9jpmjt",
@@ -2747,5 +2746,5 @@
     }
   ],
   "userName": "Дима",
-  "updatedAt": 1776750968028
+  "updatedAt": 1776750977837
 }
