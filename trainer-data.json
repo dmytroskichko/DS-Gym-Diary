@@ -2302,7 +2302,7 @@
     {
       "id": "mo414gzujomtq",
       "date": "2026-04-18",
-      "name": "Full body",
+      "name": "Full body 1",
       "bodyweight": "81.65",
       "exercises": [
         {
@@ -2462,7 +2462,7 @@
         }
       ],
       "note": "",
-      "createdAt": 1776631485940
+      "createdAt": 1776768927948
     },
     {
       "id": "mo414gzujomtq",
@@ -2746,5 +2746,5 @@
     }
   ],
   "userName": "Дима",
-  "updatedAt": 1776750977837
+  "updatedAt": 1776768927969
 }
