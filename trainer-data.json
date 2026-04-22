@@ -2803,8 +2803,49 @@
       ],
       "note": "",
       "createdAt": 1776802777992
+    },
+    {
+      "id": "mo9n7n93c0qxr",
+      "date": "2026-04-22",
+      "name": "Бег",
+      "bodyweight": "83",
+      "exercises": [
+        {
+          "name": "Бег легкий",
+          "sets": [
+            {
+              "num": 1,
+              "weight": "6.14",
+              "reps": "6.5"
+            }
+          ]
+        }
+      ],
+      "note": "",
+      "createdAt": 1776837602386,
+      "_draft": true
+    },
+    {
+      "id": "mo9n7n93c0qxr",
+      "date": "2026-04-22",
+      "name": "Бег",
+      "bodyweight": "83",
+      "exercises": [
+        {
+          "name": "Бег легкий",
+          "sets": [
+            {
+              "num": 1,
+              "weight": "6.14",
+              "reps": "6.5"
+            }
+          ]
+        }
+      ],
+      "note": "",
+      "createdAt": 1776837613181
     }
   ],
   "userName": "Дима",
-  "updatedAt": 1776802790679
+  "updatedAt": 1776837613194
 }
