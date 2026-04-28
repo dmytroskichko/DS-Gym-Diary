@@ -3122,7 +3122,7 @@
         }
       ],
       "note": "",
-      "createdAt": 1777266173845
+      "createdAt": 1777350622177
     },
     {
       "id": "moe3fn1uz7gzz",
@@ -3278,8 +3278,169 @@
       ],
       "note": "",
       "createdAt": 1777112563364
+    },
+    {
+      "id": "moi4o79hfz59n",
+      "date": "2026-04-28",
+      "name": "Ноги",
+      "bodyweight": "84",
+      "exercises": [
+        {
+          "name": "Приседания со штангой",
+          "sets": [
+            {
+              "num": 1,
+              "weight": "20",
+              "reps": "12"
+            },
+            {
+              "num": 2,
+              "weight": "50",
+              "reps": "12"
+            },
+            {
+              "num": 3,
+              "weight": "80",
+              "reps": "10"
+            },
+            {
+              "num": 4,
+              "weight": "110",
+              "reps": "10"
+            },
+            {
+              "num": 5,
+              "weight": "110",
+              "reps": "10"
+            },
+            {
+              "num": 6,
+              "weight": "120",
+              "reps": "10"
+            },
+            {
+              "num": 7,
+              "weight": "60",
+              "reps": "20"
+            }
+          ]
+        },
+        {
+          "name": "Тяга румынская в смите",
+          "sets": [
+            {
+              "num": 1,
+              "weight": "40",
+              "reps": "12"
+            },
+            {
+              "num": 2,
+              "weight": "60",
+              "reps": "10"
+            },
+            {
+              "num": 3,
+              "weight": "80",
+              "reps": "10"
+            },
+            {
+              "num": 4,
+              "weight": "80",
+              "reps": "10"
+            },
+            {
+              "num": 5,
+              "weight": "80",
+              "reps": "10"
+            }
+          ]
+        }
+      ],
+      "note": "",
+      "createdAt": 1777353157516,
+      "_draft": true
+    },
+    {
+      "id": "moi4o79hfz59n",
+      "date": "2026-04-28",
+      "name": "Ноги",
+      "bodyweight": "84",
+      "exercises": [
+        {
+          "name": "Приседания со штангой",
+          "sets": [
+            {
+              "num": 1,
+              "weight": "20",
+              "reps": "12"
+            },
+            {
+              "num": 2,
+              "weight": "50",
+              "reps": "12"
+            },
+            {
+              "num": 3,
+              "weight": "80",
+              "reps": "10"
+            },
+            {
+              "num": 4,
+              "weight": "110",
+              "reps": "10"
+            },
+            {
+              "num": 5,
+              "weight": "110",
+              "reps": "10"
+            },
+            {
+              "num": 6,
+              "weight": "120",
+              "reps": "10"
+            },
+            {
+              "num": 7,
+              "weight": "60",
+              "reps": "20"
+            }
+          ]
+        },
+        {
+          "name": "Тяга румынская в смите",
+          "sets": [
+            {
+              "num": 1,
+              "weight": "40",
+              "reps": "12"
+            },
+            {
+              "num": 2,
+              "weight": "60",
+              "reps": "10"
+            },
+            {
+              "num": 3,
+              "weight": "80",
+              "reps": "10"
+            },
+            {
+              "num": 4,
+              "weight": "80",
+              "reps": "10"
+            },
+            {
+              "num": 5,
+              "weight": "80",
+              "reps": "10"
+            }
+          ]
+        }
+      ],
+      "note": "",
+      "createdAt": 1777353165826
     }
   ],
   "userName": "Дима",
-  "updatedAt": 1777266173850
+  "updatedAt": 1777353165834
 }
