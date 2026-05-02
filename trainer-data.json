@@ -3573,8 +3573,109 @@
       ],
       "note": "",
       "createdAt": 1777527185174
+    },
+    {
+      "id": "monz4e2vz004c",
+      "date": "2026-05-02",
+      "name": "Плечи",
+      "bodyweight": "",
+      "exercises": [
+        {
+          "name": "Жим гантелей сидя на лавке",
+          "sets": [
+            {
+              "num": 1,
+              "weight": "13.6",
+              "reps": "12"
+            },
+            {
+              "num": 2,
+              "weight": "15.9",
+              "reps": "10"
+            },
+            {
+              "num": 3,
+              "weight": "18.2",
+              "reps": "10"
+            },
+            {
+              "num": 4,
+              "weight": "22.7",
+              "reps": "10"
+            },
+            {
+              "num": 5,
+              "weight": "22.7",
+              "reps": "10"
+            },
+            {
+              "num": 6,
+              "weight": "22.7",
+              "reps": "10"
+            },
+            {
+              "num": 7,
+              "weight": "1",
+              "reps": "1"
+            }
+          ]
+        }
+      ],
+      "note": "",
+      "createdAt": 1777705129924,
+      "_draft": true
+    },
+    {
+      "id": "monz4e2vz004c",
+      "date": "2026-05-02",
+      "name": "Плечи",
+      "bodyweight": "",
+      "exercises": [
+        {
+          "name": "Жим гантелей сидя на лавке",
+          "sets": [
+            {
+              "num": 1,
+              "weight": "13.6",
+              "reps": "12"
+            },
+            {
+              "num": 2,
+              "weight": "15.9",
+              "reps": "10"
+            },
+            {
+              "num": 3,
+              "weight": "18.2",
+              "reps": "10"
+            },
+            {
+              "num": 4,
+              "weight": "22.7",
+              "reps": "10"
+            },
+            {
+              "num": 5,
+              "weight": "22.7",
+              "reps": "10"
+            },
+            {
+              "num": 6,
+              "weight": "22.7",
+              "reps": "10"
+            },
+            {
+              "num": 7,
+              "weight": "1",
+              "reps": "1"
+            }
+          ]
+        }
+      ],
+      "note": "",
+      "createdAt": 1777705131448
     }
   ],
   "userName": "Дима",
-  "updatedAt": 1777527185183
+  "updatedAt": 1777705131457
 }
