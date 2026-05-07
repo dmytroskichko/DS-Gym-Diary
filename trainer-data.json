@@ -4276,14 +4276,13 @@
             {
               "num": 4,
               "weight": "15.9",
-              "reps": ""
+              "reps": "12"
             }
           ]
         }
       ],
       "note": "",
-      "createdAt": 1778131296920,
-      "_draft": true
+      "createdAt": 1778135379327
     },
     {
       "id": "mov0a5oqssgku",
@@ -4387,5 +4386,5 @@
     }
   ],
   "userName": "Дима",
-  "updatedAt": 1778135373964
+  "updatedAt": 1778135379329
 }
