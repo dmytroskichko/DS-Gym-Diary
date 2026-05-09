@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- v9 -->
+<!-- v10 -->
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
@@ -2426,13 +2426,10 @@ document.getElementById('btn-finish-training').addEventListener('click', async (
     note,
     createdAt: Date.now(),
   };
-  if (sessionState.isEdit) {
-    const idx = appData.trainings.findIndex(t => t.id === sessionState.trainingId);
-    if (idx !== -1) appData.trainings[idx] = training;
-    else appData.trainings.push(training);
-  } else {
-    appData.trainings.push(training);
-  }
+  // Always look for existing training with this ID (could be a draft from auto-save)
+  const idx = appData.trainings.findIndex(t => t.id === sessionState.trainingId);
+  if (idx !== -1) appData.trainings[idx] = training;
+  else appData.trainings.push(training);
 
   // Set calendar view to training month
   const td = new Date(training.date + 'T00:00:00');
@@ -2442,7 +2439,7 @@ document.getElementById('btn-finish-training').addEventListener('click', async (
   if (getTrainerBinId()) syncTrainerBin();
   renderCalendar();
   showScreen('front');
-  showToast(sessionState.isEdit ? 'Тренировка обновлена!' : 'Тренировка сохранена!');
+  showToast(sessionState.isEdit || idx !== -1 ? 'Тренировка обновлена!' : 'Тренировка сохранена!');
 });
 
 // ═══════════════════════════════════════════════
