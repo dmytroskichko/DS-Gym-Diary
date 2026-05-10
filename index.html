@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- v10 -->
+<!-- v12 -->
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
@@ -381,6 +381,24 @@
     color: var(--text-dim);
     white-space: nowrap;
     flex-shrink: 0;
+  }
+
+  .session-date-badge.editable {
+    cursor: pointer;
+    border-color: var(--accent2);
+    color: var(--accent2);
+  }
+
+  .session-date-input {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 100;
+  }
+
+  .session-date-input.show {
+    display: block;
   }
 
   .session-name-wrap { flex: 1; position: relative; }
@@ -1405,7 +1423,10 @@
 <div id="screen-session" class="screen">
   <div class="session-sticky-header">
     <div class="session-meta">
-      <div class="session-date-badge" id="session-date-badge">—</div>
+      <div style="position: relative;">
+        <div class="session-date-badge" id="session-date-badge">—</div>
+        <input type="date" id="session-date-input" class="session-date-input" style="padding: 8px; border-radius: var(--radius-sm); border: 1px solid var(--border); background: var(--surface2); color: var(--text);">
+      </div>
       <div class="session-name-wrap">
         <input type="text" class="session-name-input" id="session-name-input"
                placeholder="НАЗВАНИЕ ТРЕНИРОВКИ" autocomplete="off">
@@ -2085,7 +2106,30 @@ function openSession(isEdit = false, existingTraining = null) {
   };
 
   // Header
-  document.getElementById('session-date-badge').textContent = formatDateFull(dateStr);
+  const dateBadge = document.getElementById('session-date-badge');
+  const dateInput = document.getElementById('session-date-input');
+  
+  dateBadge.textContent = formatDateFull(dateStr);
+  
+  if (isEdit) {
+    // In edit mode, make date clickable/editable
+    dateBadge.classList.add('editable');
+    dateInput.value = dateStr;
+    dateInput.addEventListener('change', () => {
+      const newDate = dateInput.value;
+      sessionState.date = newDate;
+      dateBadge.textContent = formatDateFull(newDate);
+      dateInput.classList.remove('show');
+      showToast('Дата изменена');
+    });
+    dateBadge.addEventListener('click', () => {
+      dateInput.classList.toggle('show');
+      if (dateInput.classList.contains('show')) dateInput.focus();
+    });
+  } else {
+    dateBadge.classList.remove('editable');
+    dateInput.classList.remove('show');
+  }
 
   // Name
   const nameInput = document.getElementById('session-name-input');
@@ -2341,13 +2385,32 @@ function addSetRow(container, weight, reps) {
   const row = document.createElement('div');
   row.className = 'set-row';
 
+  // If no weight provided (new empty set), get previous set's weight
+  let prefillWeight = weight;
+  if (!prefillWeight) {
+    const prevRows = container.querySelectorAll('.set-row');
+    if (prevRows.length > 0) {
+      const lastRow = prevRows[prevRows.length - 1];
+      const prevWeight = lastRow.querySelector('.weight-input')?.value?.trim();
+      if (prevWeight) prefillWeight = prevWeight;
+    }
+  }
+
   row.innerHTML = `
     <div class="set-num">${setNum}</div>
-    <input type="number" class="set-input weight-input" placeholder="—" value="${weight || ''}" inputmode="decimal" min="0" step="0.5">
+    <input type="number" class="set-input weight-input" placeholder="—" value="${prefillWeight || ''}" inputmode="decimal" min="0" step="0.5">
     <input type="number" class="set-input reps-input" placeholder="—" value="${reps || ''}" inputmode="numeric" min="0">`;
 
   const weightInput = row.querySelector('.weight-input');
   const repsInput = row.querySelector('.reps-input');
+
+  // Auto-select weight if it's a new prefilled set (auto-added, not from editing existing)
+  if (!weight && prefillWeight) {
+    setTimeout(() => {
+      weightInput.select();
+      weightInput.focus();
+    }, 50);
+  }
 
   function checkWeightFilled() {
     const w = weightInput.value.trim();
