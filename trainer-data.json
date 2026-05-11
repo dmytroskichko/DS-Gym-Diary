@@ -3996,7 +3996,7 @@
     },
     {
       "id": "mp0pozxmj1md0",
-      "date": "2026-05-11",
+      "date": "2026-05-10",
       "name": "Препараты",
       "bodyweight": "",
       "exercises": [
@@ -4022,9 +4022,9 @@
         }
       ],
       "note": "",
-      "createdAt": 1778474425866
+      "createdAt": 1778474465903
     }
   ],
   "userName": "Дима",
-  "updatedAt": 1778474425868
+  "updatedAt": 1778474465906
 }
