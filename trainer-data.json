@@ -3993,8 +3993,38 @@
       ],
       "note": "",
       "createdAt": 1778474310626
+    },
+    {
+      "id": "mp0pozxmj1md0",
+      "date": "2026-05-11",
+      "name": "Препараты",
+      "bodyweight": "",
+      "exercises": [
+        {
+          "name": "Сустанон",
+          "sets": [
+            {
+              "num": 1,
+              "weight": "250",
+              "reps": ""
+            }
+          ]
+        },
+        {
+          "name": "Примоболан",
+          "sets": [
+            {
+              "num": 1,
+              "weight": "300",
+              "reps": ""
+            }
+          ]
+        }
+      ],
+      "note": "",
+      "createdAt": 1778474376856
     }
   ],
   "userName": "Дима",
-  "updatedAt": 1778474310646
+  "updatedAt": 1778474376858
 }
