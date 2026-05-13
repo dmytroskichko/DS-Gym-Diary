@@ -4023,8 +4023,58 @@
       ],
       "note": "",
       "createdAt": 1778474465903
+    },
+    {
+      "id": "mp3kz15u1cyz2",
+      "date": "2026-05-13",
+      "name": "Ноги",
+      "bodyweight": "",
+      "exercises": [
+        {
+          "name": "Жим платформы ногами",
+          "sets": [
+            {
+              "num": 1,
+              "weight": "40",
+              "reps": "12"
+            },
+            {
+              "num": 2,
+              "weight": "80",
+              "reps": "12"
+            },
+            {
+              "num": 3,
+              "weight": "120",
+              "reps": "12"
+            },
+            {
+              "num": 4,
+              "weight": "160",
+              "reps": "12"
+            },
+            {
+              "num": 5,
+              "weight": "160",
+              "reps": "12"
+            },
+            {
+              "num": 6,
+              "weight": "160",
+              "reps": "12"
+            },
+            {
+              "num": 7,
+              "weight": "160",
+              "reps": "12"
+            }
+          ]
+        }
+      ],
+      "note": "",
+      "createdAt": 1778649710179
     }
   ],
   "userName": "Дима",
-  "updatedAt": 1778474465906
+  "updatedAt": 1778649710187
 }
