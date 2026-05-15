@@ -4073,8 +4073,43 @@
       ],
       "note": "",
       "createdAt": 1778649710179
+    },
+    {
+      "id": "mp6fdazuuflil",
+      "date": "2026-05-15",
+      "name": "Грудь",
+      "bodyweight": "",
+      "exercises": [
+        {
+          "name": "Жим штанги на горизонтальной скамье",
+          "sets": [
+            {
+              "num": 1,
+              "weight": "20",
+              "reps": "12"
+            },
+            {
+              "num": 2,
+              "weight": "50",
+              "reps": "10"
+            },
+            {
+              "num": 3,
+              "weight": "70",
+              "reps": "8"
+            },
+            {
+              "num": 4,
+              "weight": "70",
+              "reps": ""
+            }
+          ]
+        }
+      ],
+      "note": "",
+      "createdAt": 1778820209811
     }
   ],
   "userName": "Дима",
-  "updatedAt": 1778649710187
+  "updatedAt": 1778820209823
 }
