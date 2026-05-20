@@ -4332,7 +4332,7 @@
     {
       "id": "mpdjos8irnk4j",
       "date": "2026-05-20",
-      "name": "Спин",
+      "name": "Спина",
       "bodyweight": "",
       "exercises": [
         {
@@ -4457,9 +4457,9 @@
         }
       ],
       "note": "",
-      "createdAt": 1779262496631
+      "createdAt": 1779262505147
     }
   ],
   "userName": "Дима",
-  "updatedAt": 1779262496641
+  "updatedAt": 1779262505148
 }
