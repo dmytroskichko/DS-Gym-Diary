@@ -4328,8 +4328,138 @@
       ],
       "note": "",
       "createdAt": 1779250295691
+    },
+    {
+      "id": "mpdjos8irnk4j",
+      "date": "2026-05-20",
+      "name": "Спин",
+      "bodyweight": "",
+      "exercises": [
+        {
+          "name": "Тяга штанги в наклоне",
+          "sets": [
+            {
+              "num": 1,
+              "weight": "30",
+              "reps": "12"
+            },
+            {
+              "num": 2,
+              "weight": "40",
+              "reps": "6"
+            },
+            {
+              "num": 3,
+              "weight": "50",
+              "reps": "8"
+            },
+            {
+              "num": 4,
+              "weight": "60",
+              "reps": "6"
+            },
+            {
+              "num": 5,
+              "weight": "80",
+              "reps": "10"
+            },
+            {
+              "num": 6,
+              "weight": "90",
+              "reps": "10"
+            },
+            {
+              "num": 7,
+              "weight": "100",
+              "reps": "10"
+            },
+            {
+              "num": 8,
+              "weight": "90",
+              "reps": "10"
+            }
+          ]
+        },
+        {
+          "name": "Тяга Т грифа",
+          "sets": [
+            {
+              "num": 1,
+              "weight": "40",
+              "reps": "8"
+            },
+            {
+              "num": 2,
+              "weight": "60",
+              "reps": "10"
+            },
+            {
+              "num": 3,
+              "weight": "80",
+              "reps": "10"
+            },
+            {
+              "num": 4,
+              "weight": "80",
+              "reps": "9"
+            },
+            {
+              "num": 5,
+              "weight": "70",
+              "reps": ""
+            }
+          ]
+        },
+        {
+          "name": "Тяга рычажная вертикальна",
+          "sets": [
+            {
+              "num": 1,
+              "weight": "20",
+              "reps": "10"
+            },
+            {
+              "num": 2,
+              "weight": "30",
+              "reps": "12"
+            },
+            {
+              "num": 3,
+              "weight": "40",
+              "reps": "12"
+            },
+            {
+              "num": 4,
+              "weight": "40",
+              "reps": "10"
+            },
+            {
+              "num": 5,
+              "weight": "30",
+              "reps": "12"
+            }
+          ]
+        },
+        {
+          "name": "Тяга гантелей на наклонной скамье на спину",
+          "sets": [
+            {
+              "num": 1,
+              "weight": "24.9",
+              "reps": "12"
+            },
+            {
+              "num": 2,
+              "weight": "24.9",
+              "reps": "12"
+            }
+          ]
+        }
+      ],
+      "note": "",
+      "createdAt": 1779262496631
     }
   ],
   "userName": "Дима",
-  "updatedAt": 1779250295699
+  "updatedAt": 1779262496641
 }
