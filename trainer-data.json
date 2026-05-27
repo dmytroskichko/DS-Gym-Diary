@@ -4718,8 +4718,113 @@
       ],
       "note": "",
       "createdAt": 1779855433004
+    },
+    {
+      "id": "mpnjyz6p9taxs",
+      "date": "2026-05-27",
+      "name": "Ноги",
+      "bodyweight": "87.25",
+      "exercises": [
+        {
+          "name": "Приседания со штангой",
+          "sets": [
+            {
+              "num": 1,
+              "weight": "20",
+              "reps": "12"
+            },
+            {
+              "num": 2,
+              "weight": "50",
+              "reps": "10"
+            },
+            {
+              "num": 3,
+              "weight": "80",
+              "reps": "6"
+            },
+            {
+              "num": 4,
+              "weight": "110",
+              "reps": "8"
+            },
+            {
+              "num": 5,
+              "weight": "110",
+              "reps": "8"
+            },
+            {
+              "num": 6,
+              "weight": "110",
+              "reps": "8"
+            },
+            {
+              "num": 7,
+              "weight": "110",
+              "reps": "8"
+            }
+          ]
+        },
+        {
+          "name": "Тяга румынская в смите",
+          "sets": [
+            {
+              "num": 1,
+              "weight": "40",
+              "reps": "8"
+            },
+            {
+              "num": 2,
+              "weight": "80",
+              "reps": "10"
+            },
+            {
+              "num": 3,
+              "weight": "80",
+              "reps": "10"
+            },
+            {
+              "num": 4,
+              "weight": "80",
+              "reps": "10"
+            },
+            {
+              "num": 5,
+              "weight": "80",
+              "reps": "10"
+            }
+          ]
+        },
+        {
+          "name": "Разгибание ног в тренажере",
+          "sets": [
+            {
+              "num": 1,
+              "weight": "100",
+              "reps": "12"
+            },
+            {
+              "num": 2,
+              "weight": "110",
+              "reps": "12"
+            },
+            {
+              "num": 3,
+              "weight": "120",
+              "reps": "12"
+            },
+            {
+              "num": 4,
+              "weight": "130",
+              "reps": "12"
+            }
+          ]
+        }
+      ],
+      "note": "",
+      "createdAt": 1779872625541
     }
   ],
   "userName": "Дима",
-  "updatedAt": 1779855433023
+  "updatedAt": 1779872625551
 }
