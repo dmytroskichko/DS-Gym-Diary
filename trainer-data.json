@@ -6811,20 +6811,25 @@
             {
               "num": 2,
               "weight": "50",
-              "reps": ""
+              "reps": "12"
             },
             {
               "num": 3,
               "weight": "50",
-              "reps": ""
+              "reps": "12"
+            },
+            {
+              "num": 4,
+              "weight": "50",
+              "reps": "12"
             }
           ]
         }
       ],
       "note": "",
-      "createdAt": 1782649554720
+      "createdAt": 1782649578350
     }
   ],
   "userName": "Дима",
-  "updatedAt": 1782649554726
+  "updatedAt": 1782649578353
 }
