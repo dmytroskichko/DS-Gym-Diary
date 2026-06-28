@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- v12 -->
+<!-- v13 -->
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
@@ -2454,6 +2454,9 @@ function addSetRow(container, weight, reps) {
 
 // FINISH TRAINING
 document.getElementById('btn-finish-training').addEventListener('click', async () => {
+  // Cancel any pending auto-saves to prevent _draft flag from being re-added
+  clearTimeout(autoSaveTimer);
+  
   const name = document.getElementById('session-name-input').value.trim();
   const bodyweight = document.getElementById('bodyweight-input').value.trim();
   const note = document.getElementById('note-textarea').value.trim();
@@ -2493,6 +2496,10 @@ document.getElementById('btn-finish-training').addEventListener('click', async (
   const idx = appData.trainings.findIndex(t => t.id === sessionState.trainingId);
   if (idx !== -1) appData.trainings[idx] = training;
   else appData.trainings.push(training);
+  
+  // Ensure no _draft flag exists on this training (safety measure)
+  const finalIdx = appData.trainings.findIndex(t => t.id === sessionState.trainingId);
+  if (finalIdx !== -1) delete appData.trainings[finalIdx]._draft;
 
   // Set calendar view to training month
   const td = new Date(training.date + 'T00:00:00');
