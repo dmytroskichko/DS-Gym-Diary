@@ -7303,8 +7303,83 @@
       ],
       "note": "",
       "createdAt": 1784612157771
+    },
+    {
+      "id": "ms45jzw5rukk4",
+      "date": "2026-07-28",
+      "name": "Спина",
+      "bodyweight": "",
+      "exercises": [
+        {
+          "name": "Тяга штанги в наклоне",
+          "sets": [
+            {
+              "num": 1,
+              "weight": "20",
+              "reps": "12"
+            },
+            {
+              "num": 2,
+              "weight": "50",
+              "reps": "8"
+            },
+            {
+              "num": 3,
+              "weight": "80",
+              "reps": "4"
+            },
+            {
+              "num": 4,
+              "weight": "100",
+              "reps": "10"
+            },
+            {
+              "num": 5,
+              "weight": "100",
+              "reps": "10"
+            },
+            {
+              "num": 6,
+              "weight": "100",
+              "reps": "10"
+            }
+          ]
+        },
+        {
+          "name": "Тяга Т грифа",
+          "sets": [
+            {
+              "num": 1,
+              "weight": "35",
+              "reps": "10"
+            },
+            {
+              "num": 2,
+              "weight": "55",
+              "reps": "4"
+            },
+            {
+              "num": 3,
+              "weight": "70",
+              "reps": ""
+            },
+            {
+              "num": 4,
+              "weight": "75",
+              "reps": ""
+            },
+            {
+              "num": 5,
+              "weight": "75",
+              "reps": ""
+            }
+          ]
+        }
+      ],
+      "note": "",
+      "createdAt": 1785213837088
     }
   ],
   "userName": "Дима",
-  "updatedAt": 1784612157779
+  "updatedAt": 1785213837099
 }
