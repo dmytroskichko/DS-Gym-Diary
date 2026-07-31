@@ -7428,8 +7428,113 @@
       ],
       "note": "",
       "createdAt": 1785215741140
+    },
+    {
+      "id": "ms8grhimuk56q",
+      "date": "2026-07-31",
+      "name": "Грудь",
+      "bodyweight": "",
+      "exercises": [
+        {
+          "name": "Жим штанги лежа",
+          "sets": [
+            {
+              "num": 1,
+              "weight": "20",
+              "reps": "12"
+            },
+            {
+              "num": 2,
+              "weight": "40",
+              "reps": "8"
+            },
+            {
+              "num": 3,
+              "weight": "60",
+              "reps": "4"
+            },
+            {
+              "num": 4,
+              "weight": "80",
+              "reps": "2"
+            },
+            {
+              "num": 5,
+              "weight": "100",
+              "reps": "3"
+            },
+            {
+              "num": 6,
+              "weight": "100",
+              "reps": "3"
+            },
+            {
+              "num": 7,
+              "weight": "100",
+              "reps": "3"
+            },
+            {
+              "num": 8,
+              "weight": "100",
+              "reps": "3"
+            }
+          ]
+        },
+        {
+          "name": "Жим штанги на наклонной скамье головой вверх",
+          "sets": [
+            {
+              "num": 1,
+              "weight": "60",
+              "reps": "8"
+            },
+            {
+              "num": 2,
+              "weight": "70",
+              "reps": "8"
+            },
+            {
+              "num": 3,
+              "weight": "70",
+              "reps": "7"
+            },
+            {
+              "num": 4,
+              "weight": "70",
+              "reps": "6"
+            },
+            {
+              "num": 5,
+              "weight": "70",
+              "reps": "4"
+            }
+          ]
+        },
+        {
+          "name": "Сведение рук в кроссовере",
+          "sets": [
+            {
+              "num": 1,
+              "weight": "14",
+              "reps": "12"
+            },
+            {
+              "num": 2,
+              "weight": "14",
+              "reps": "12"
+            },
+            {
+              "num": 3,
+              "weight": "14",
+              "reps": "12"
+            }
+          ]
+        }
+      ],
+      "note": "",
+      "createdAt": 1785480567086
     }
   ],
   "userName": "Дима",
-  "updatedAt": 1785215741155
+  "updatedAt": 1785480567094
 }
