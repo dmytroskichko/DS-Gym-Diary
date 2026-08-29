@@ -8738,8 +8738,88 @@
       ],
       "note": "",
       "createdAt": 1787466640005
+    },
+    {
+      "id": "mt5hy876oyji6",
+      "date": "2026-08-23",
+      "name": "Грудь",
+      "bodyweight": "86.5",
+      "exercises": [
+        {
+          "name": "Жим  штанги на наклонной скамье головой вверх",
+          "sets": [
+            {
+              "num": 1,
+              "weight": "20",
+              "reps": "12"
+            },
+            {
+              "num": 2,
+              "weight": "50",
+              "reps": "10"
+            },
+            {
+              "num": 3,
+              "weight": "60",
+              "reps": "10"
+            },
+            {
+              "num": 4,
+              "weight": "70",
+              "reps": "10"
+            },
+            {
+              "num": 5,
+              "weight": "75",
+              "reps": "8"
+            },
+            {
+              "num": 6,
+              "weight": "75",
+              "reps": "7"
+            },
+            {
+              "num": 7,
+              "weight": "70",
+              "reps": "8"
+            },
+            {
+              "num": 8,
+              "weight": "70",
+              "reps": "8"
+            },
+            {
+              "num": 9,
+              "weight": "70",
+              "reps": "7"
+            }
+          ]
+        },
+        {
+          "name": "Жим в Хаммере на грудь",
+          "sets": [
+            {
+              "num": 1,
+              "weight": "20",
+              "reps": "15"
+            },
+            {
+              "num": 2,
+              "weight": "30",
+              "reps": "15"
+            },
+            {
+              "num": 3,
+              "weight": "35",
+              "reps": ""
+            }
+          ]
+        }
+      ],
+      "note": "",
+      "createdAt": 1787992117558
     }
   ],
   "userName": "Дима",
-  "updatedAt": 1787466640011
+  "updatedAt": 1787992117564
 }
