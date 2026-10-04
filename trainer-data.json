@@ -11018,8 +11018,128 @@
       ],
       "note": "",
       "createdAt": 1790951545361
+    },
+    {
+      "id": "mus3w6qoq8tv6",
+      "date": "2026-10-03",
+      "name": "Грудь трицепс",
+      "bodyweight": "",
+      "exercises": [
+        {
+          "name": "Жим штанги лежа",
+          "sets": [
+            {
+              "num": 1,
+              "weight": "20",
+              "reps": "12"
+            },
+            {
+              "num": 2,
+              "weight": "40",
+              "reps": "10"
+            },
+            {
+              "num": 3,
+              "weight": "60",
+              "reps": "8"
+            },
+            {
+              "num": 4,
+              "weight": "80",
+              "reps": "6"
+            },
+            {
+              "num": 5,
+              "weight": "100",
+              "reps": "6"
+            },
+            {
+              "num": 6,
+              "weight": "100",
+              "reps": "5"
+            },
+            {
+              "num": 7,
+              "weight": "100",
+              "reps": "5"
+            },
+            {
+              "num": 8,
+              "weight": "100",
+              "reps": "4"
+            }
+          ]
+        },
+        {
+          "name": "Жим штанги на наклонной скамье головой вниз",
+          "sets": [
+            {
+              "num": 1,
+              "weight": "20",
+              "reps": "12"
+            },
+            {
+              "num": 2,
+              "weight": "60",
+              "reps": "10"
+            },
+            {
+              "num": 3,
+              "weight": "80",
+              "reps": "8"
+            },
+            {
+              "num": 4,
+              "weight": "90",
+              "reps": "7"
+            },
+            {
+              "num": 5,
+              "weight": "90",
+              "reps": "6"
+            },
+            {
+              "num": 6,
+              "weight": "80",
+              "reps": "8"
+            }
+          ]
+        },
+        {
+          "name": "Жим в смите сидя на наклонной скамье",
+          "sets": [
+            {
+              "num": 1,
+              "weight": "20",
+              "reps": "12"
+            },
+            {
+              "num": 2,
+              "weight": "50",
+              "reps": "10"
+            },
+            {
+              "num": 3,
+              "weight": "60",
+              "reps": "8"
+            },
+            {
+              "num": 4,
+              "weight": "7",
+              "reps": "7"
+            },
+            {
+              "num": 5,
+              "weight": "50",
+              "reps": "10"
+            }
+          ]
+        }
+      ],
+      "note": "",
+      "createdAt": 1791103327940
     }
   ],
   "userName": "Дима",
-  "updatedAt": 1790951545378
+  "updatedAt": 1791103327960
 }
